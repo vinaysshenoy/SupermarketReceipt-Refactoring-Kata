@@ -74,6 +74,10 @@ public class ShoppingCart {
             case FiveForAmount:
                 offerCount = 5;
                 break;
+
+            case TenPercentDiscount:
+
+                break;
         }
 
         if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
