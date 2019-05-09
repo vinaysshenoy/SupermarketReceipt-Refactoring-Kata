@@ -77,19 +77,17 @@ public class ShoppingCart {
         }
 
         int numberOfOffers = quantityAsInt / offerCount;
-        Discount discount1 = discount;
         if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
             double discountAmount = quantity * unitPrice - ((numberOfOffers * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
-            discount1 = new Discount(p, "3 for 2", discountAmount);
+            discount = new Discount(p, "3 for 2", discountAmount);
         }
         if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
-            discount1 = new Discount(p, offer.argument + "% off", quantity * unitPrice * offer.argument / 100.0);
+            discount = new Discount(p, offer.argument + "% off", quantity * unitPrice * offer.argument / 100.0);
         }
         if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
             double discountTotal = unitPrice * quantity - (offer.argument * numberOfOffers + quantityAsInt % 5 * unitPrice);
-            discount1 = new Discount(p, offerCount + " for " + offer.argument, discountTotal);
+            discount = new Discount(p, offerCount + " for " + offer.argument, discountTotal);
         }
-        discount = discount1;
         return discount;
     }
 
