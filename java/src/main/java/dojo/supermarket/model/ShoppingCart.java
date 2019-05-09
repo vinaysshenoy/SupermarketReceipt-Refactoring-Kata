@@ -40,9 +40,8 @@ public class ShoppingCart {
     }
 
     private void handleProduct(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog, Product p) {
-        double quantity = productQuantities.get(p);
         if (offers.containsKey(p)) {
-            Bang(receipt, offers, catalog, p, quantity);
+            Bang(receipt, offers, catalog, p, productQuantities.get(p));
         }
     }
 
