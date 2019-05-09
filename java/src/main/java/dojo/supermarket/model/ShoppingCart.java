@@ -49,6 +49,12 @@ public class ShoppingCart {
         Offer offer = offers.get(p);
         double unitPrice = catalog.getUnitPrice(p);
         int quantityAsInt = (int) quantity;
+        Discount discount = getDiscount(p, quantity, offer, unitPrice, quantityAsInt);
+        if (discount != null)
+            receipt.addDiscount(discount);
+    }
+
+    private Discount getDiscount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt) {
         Discount discount = null;
         int x = 1;
         if (offer.offerType == SpecialOfferType.ThreeForTwo) {
@@ -78,7 +84,6 @@ public class ShoppingCart {
             double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
             discount = new Discount(p, x + " for " + offer.argument, discountTotal);
         }
-        if (discount != null)
-            receipt.addDiscount(discount);
+        return discount;
     }
 }
