@@ -57,20 +57,25 @@ public class ShoppingCart {
     private Discount getDiscount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt) {
         Discount discount = null;
         int offerCount = 1;
-        if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-            offerCount = 3;
+        switch (offer.offerType) {
+            case ThreeForTwo:
+                offerCount = 3;
 
-        } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
-            offerCount = 2;
-            if (quantityAsInt >= 2) {
-                double total = offer.argument * quantityAsInt / offerCount + quantityAsInt % 2 * unitPrice;
-                double discountN = unitPrice * quantity - total;
-                discount = new Discount(p, "2 for " + offer.argument, discountN);
-            }
+                break;
+            case TwoForAmount:
+                offerCount = 2;
+                if (quantityAsInt >= 2) {
+                    double total = offer.argument * quantityAsInt / offerCount + quantityAsInt % 2 * unitPrice;
+                    double discountN = unitPrice * quantity - total;
+                    discount = new Discount(p, "2 for " + offer.argument, discountN);
+                }
 
-        }else if (offer.offerType == SpecialOfferType.FiveForAmount) {
-            offerCount = 5;
+                break;
+            case FiveForAmount:
+                offerCount = 5;
+                break;
         }
+
         int numberOfOffers = quantityAsInt / offerCount;
         discount = booboo(p, quantity, offer, unitPrice, quantityAsInt, discount, offerCount, numberOfOffers);
         return discount;
