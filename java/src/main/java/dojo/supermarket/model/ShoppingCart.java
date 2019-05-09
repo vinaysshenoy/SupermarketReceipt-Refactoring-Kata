@@ -76,8 +76,8 @@ public class ShoppingCart {
                 break;
         }
 
-        int numberOfOffers = quantityAsInt / offerCount;
         if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
+            int numberOfOffers = quantityAsInt / offerCount;
             double discountAmount = quantity * unitPrice - ((numberOfOffers * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
             discount = new Discount(p, "3 for 2", discountAmount);
         }
@@ -85,6 +85,7 @@ public class ShoppingCart {
             discount = new Discount(p, offer.argument + "% off", quantity * unitPrice * offer.argument / 100.0);
         }
         if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
+            int numberOfOffers = quantityAsInt / offerCount;
             double discountTotal = unitPrice * quantity - (offer.argument * numberOfOffers + quantityAsInt % 5 * unitPrice);
             discount = new Discount(p, offerCount + " for " + offer.argument, discountTotal);
         }
