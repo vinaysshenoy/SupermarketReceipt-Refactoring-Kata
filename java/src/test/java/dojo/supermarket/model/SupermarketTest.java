@@ -2,9 +2,13 @@ package dojo.supermarket.model;
 
 import dojo.supermarket.ReceiptPrinter;
 import org.approvaltests.Approvals;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.approvaltests.testcommitrevert.TestCommitRevertRunner;
+import org.approvaltests.testcommitrevert.TestCommitRevertTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(TestCommitRevertRunner.class)
 public class SupermarketTest {
     private SupermarketCatalog catalog;
     private Teller teller;
@@ -14,7 +18,7 @@ public class SupermarketTest {
     private Product apples;
     private Product cherryTomatoes;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         catalog = new FakeCatalog();
         teller = new Teller(catalog);

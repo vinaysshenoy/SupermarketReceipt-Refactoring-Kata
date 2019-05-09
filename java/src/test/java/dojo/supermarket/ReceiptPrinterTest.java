@@ -2,7 +2,7 @@ package dojo.supermarket;
 
 import dojo.supermarket.model.*;
 import org.approvaltests.Approvals;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class ReceiptPrinterTest {
 
