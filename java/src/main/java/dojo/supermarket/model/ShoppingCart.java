@@ -76,9 +76,7 @@ public class ShoppingCart {
                 break;
 
             case TenPercentDiscount:
-                if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
-                    discount = new Discount(p, offer.argument + "% off", quantity * unitPrice * offer.argument / 100.0);
-                }
+                discount = new Discount(p, offer.argument + "% off", quantity * unitPrice * offer.argument / 100.0);
                 break;
         }
 
