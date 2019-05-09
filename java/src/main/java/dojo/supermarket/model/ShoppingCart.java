@@ -68,8 +68,7 @@ public class ShoppingCart {
                 discount = new Discount(p, "2 for " + offer.argument, discountN);
             }
 
-        }
-        if (offer.offerType == SpecialOfferType.FiveForAmount) {
+        }else if (offer.offerType == SpecialOfferType.FiveForAmount) {
             offerCount = 5;
         }
         int numberOfOffers = quantityAsInt / offerCount;
