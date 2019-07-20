@@ -4,6 +4,7 @@ plugins {
 
 ext {
     junitVersion = "5.4.0"
+    striktVersion = "0.21.1"
 }
 
 group 'org.codingdojo'
@@ -11,6 +12,7 @@ version '1.0.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 test {
@@ -22,6 +24,7 @@ dependencies {
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
     testRuntime "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+    testImplementation "io.strikt:strikt-core:$striktVersion"
 }
 
 compileKotlin {
