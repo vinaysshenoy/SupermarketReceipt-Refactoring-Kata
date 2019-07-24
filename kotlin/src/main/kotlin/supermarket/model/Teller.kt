@@ -5,7 +5,7 @@ class Teller(private val catalog: SupermarketCatalog) {
     private val offers = mutableMapOf<Product, Offer>()
 
     fun addSpecialOffer(offerType: SpecialOfferType, product: Product, argument: Double) {
-        this.offers[product] = Offer(offerType, product, argument)
+        this.offers[product] = Offer.create(offerType, product, argument)
     }
 
     fun checksOutArticlesFrom(theCart: ShoppingCart): Receipt {
