@@ -6,7 +6,7 @@ import java.util.HashMap
 class ShoppingCart {
 
     private val items = ArrayList<ProductQuantity>()
-    internal var productQuantities: MutableMap<Product, Double> = HashMap()
+    internal var productQuantities = mutableMapOf<Product, Double>()
 
 
     internal fun getItems(): List<ProductQuantity> {
