@@ -31,17 +31,17 @@ class ShoppingCart {
     }
 
     internal fun handleOffers(receipt: Receipt, offers: Map<Product, Offer>, catalog: SupermarketCatalog) {
-        for (p in productQuantities().keys) {
-            val quantity = productQuantities[p]!!
-            if (offers.containsKey(p)) {
-                val offer = offers[p]!!
-                val unitPrice = catalog.getUnitPrice(p)
+        for (product in productQuantities().keys) {
+            val quantity = productQuantities.getValue(product)
+            if (offers.containsKey(product)) {
+                val offer = offers.getValue(product)
+                val unitPrice = catalog.getUnitPrice(product)
 
                 discountIfOfferApplicable(
                     offer = offer,
                     quantity = quantity,
                     unitPrice = unitPrice,
-                    product = p
+                    product = product
                 )?.let { discount ->
                     receipt.addDiscount(discount)
                 }
