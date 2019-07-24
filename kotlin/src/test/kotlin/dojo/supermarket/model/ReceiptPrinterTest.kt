@@ -148,9 +148,9 @@ product 5      87.50
   25.00 * 3.500
 product 3      15.00
 2 for 18.5(product 1)--17.00
+5 for 95.0(product 4)-15.00
 3 for 2(product 3)-15.00
 10.0% off(product 5)-8.75
-5 for 95.0(product 4)-15.00
 
 Total:        310.75"""
             ),
@@ -170,9 +170,9 @@ product 5                          87.50
   25.00 * 3.500
 product 3                          15.00
 2 for 18.5(product 1)            --17.00
+5 for 95.0(product 4)             -15.00
 3 for 2(product 3)                -15.00
 10.0% off(product 5)               -8.75
-5 for 95.0(product 4)             -15.00
 
 Total:                            310.75"""
             ),
@@ -192,9 +192,9 @@ product 5                                              87.50
   25.00 * 3.500
 product 3                                              15.00
 2 for 18.5(product 1)                                --17.00
+5 for 95.0(product 4)                                 -15.00
 3 for 2(product 3)                                    -15.00
 10.0% off(product 5)                                   -8.75
-5 for 95.0(product 4)                                 -15.00
 
 Total:                                                310.75"""
             )
