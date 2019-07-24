@@ -49,24 +49,25 @@ class ShoppingCart {
                 } else if (offer.offerType === SpecialOfferType.TwoForAmount) {
                     val minimumQuantityToApplyOffer = 2
                     if (quantityAsInt >= 2) {
-                        val total = offer.argument * quantityAsInt / minimumQuantityToApplyOffer + quantityAsInt % 2 * unitPrice
+                        val total =
+                            offer.argument * quantityAsInt / minimumQuantityToApplyOffer + quantityAsInt % 2 * unitPrice
                         val discountN = unitPrice * quantity - total
                         discount = Discount(p, "2 for " + offer.argument, discountN)
                     }
 
                 }
-                if (offer.offerType === SpecialOfferType.FiveForAmount) {
-                    x = 5
+                if (offer.offerType === SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
+                    val minimumQuantityToApplyOffer = 5
+                    val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+                    val discountTotal =
+                        unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice)
+                    discount =
+                        Discount(p, minimumQuantityToApplyOffer.toString() + " for " + offer.argument, discountTotal)
                 }
                 val numberOfXs = quantityAsInt / x
                 if (offer.offerType === SpecialOfferType.TenPercentDiscount) {
                     discount =
                         Discount(p, offer.argument.toString() + "% off", quantity * unitPrice * offer.argument / 100.0)
-                }
-                if (offer.offerType === SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    val discountTotal =
-                        unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice)
-                    discount = Discount(p, x.toString() + " for " + offer.argument, discountTotal)
                 }
                 if (discount != null)
                     receipt.addDiscount(discount)
