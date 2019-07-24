@@ -1,7 +1,6 @@
 package supermarket.model
 
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 class ShoppingCart {
 
@@ -40,8 +39,12 @@ class ShoppingCart {
                 val quantityAsInt = quantity.toInt()
                 var discount: Discount? = null
                 var x = 1
-                if (offer.offerType === SpecialOfferType.ThreeForTwo) {
-                    x = 3
+                if (offer.offerType === SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
+                    val minimumQuantityToApplyOffer = 3
+                    val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+                    val discountAmount =
+                        quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
+                    discount = Discount(p, "3 for 2", discountAmount)
 
                 } else if (offer.offerType === SpecialOfferType.TwoForAmount) {
                     x = 2
@@ -56,11 +59,6 @@ class ShoppingCart {
                     x = 5
                 }
                 val numberOfXs = quantityAsInt / x
-                if (offer.offerType === SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
-                    val discountAmount =
-                        quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
-                    discount = Discount(p, "3 for 2", discountAmount)
-                }
                 if (offer.offerType === SpecialOfferType.TenPercentDiscount) {
                     discount =
                         Discount(p, offer.argument.toString() + "% off", quantity * unitPrice * offer.argument / 100.0)
