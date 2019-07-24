@@ -38,7 +38,6 @@ class ShoppingCart {
                 val unitPrice = catalog.getUnitPrice(p)
                 val quantityAsInt = quantity.toInt()
                 var discount: Discount? = null
-                var x = 1
                 if (offer.offerType === SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
                     val minimumQuantityToApplyOffer = 3
                     val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
@@ -55,17 +54,14 @@ class ShoppingCart {
                         discount = Discount(p, "2 for " + offer.argument, discountN)
                     }
 
-                }
-                if (offer.offerType === SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
+                } else if (offer.offerType === SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
                     val minimumQuantityToApplyOffer = 5
                     val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
                     val discountTotal =
                         unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice)
                     discount =
                         Discount(p, minimumQuantityToApplyOffer.toString() + " for " + offer.argument, discountTotal)
-                }
-                val numberOfXs = quantityAsInt / x
-                if (offer.offerType === SpecialOfferType.TenPercentDiscount) {
+                } else if (offer.offerType === SpecialOfferType.TenPercentDiscount) {
                     discount =
                         Discount(p, offer.argument.toString() + "% off", quantity * unitPrice * offer.argument / 100.0)
                 }
