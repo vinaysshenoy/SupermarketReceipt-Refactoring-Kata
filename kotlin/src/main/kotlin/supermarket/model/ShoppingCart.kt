@@ -4,23 +4,20 @@ import supermarket.model.Offer.*
 import java.util.*
 
 class ShoppingCart {
-
     private val items = ArrayList<ProductQuantity>()
-    internal var productQuantities = mutableMapOf<Product, Double>()
+    private val productQuantities = mutableMapOf<Product, Double>()
 
-
-    internal fun getItems(): List<ProductQuantity> {
+    fun getItems(): List<ProductQuantity> {
         return ArrayList(items)
     }
 
-    internal fun addItem(product: Product) {
+    fun addItem(product: Product) {
         this.addItemQuantity(product, 1.0)
     }
 
-    internal fun productQuantities(): Map<Product, Double> {
+    private fun productQuantities(): Map<Product, Double> {
         return productQuantities
     }
-
 
     fun addItemQuantity(product: Product, quantity: Double) {
         items.add(ProductQuantity(product, quantity))
@@ -31,7 +28,7 @@ class ShoppingCart {
         }
     }
 
-    internal fun handleOffers(receipt: Receipt, offers: Map<Product, Offer>, catalog: SupermarketCatalog) {
+    fun handleOffers(receipt: Receipt, offers: Map<Product, Offer>, catalog: SupermarketCatalog) {
         for (product in productQuantities().keys) {
             val quantity = productQuantities.getValue(product)
             if (offers.containsKey(product)) {
