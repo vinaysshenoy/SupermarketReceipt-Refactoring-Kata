@@ -10,10 +10,10 @@ import supermarket.model.Product
 import supermarket.model.ProductUnit
 import supermarket.model.ShoppingCart
 import supermarket.model.Teller
-import supermarket.model.offers.FiveForAmount
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.TwoForAmount
+import supermarket.model.offers.XForAmount
 
 class SupermarketTest {
 
@@ -144,7 +144,7 @@ class SupermarketTest {
             ThreeForTwo(product3),
             TwoForAmount(product1, 18.5),
             TenPercentDiscount(product5),
-            FiveForAmount(product4, 95.0)
+            XForAmount(product4, 5.0, 95.0)
         )
 
 

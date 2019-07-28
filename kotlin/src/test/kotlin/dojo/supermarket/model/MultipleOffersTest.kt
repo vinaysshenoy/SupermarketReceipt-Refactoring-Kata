@@ -9,10 +9,10 @@ import supermarket.model.Product
 import supermarket.model.ProductUnit
 import supermarket.model.ShoppingCart
 import supermarket.model.Teller
-import supermarket.model.offers.FiveForAmount
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.TwoForAmount
+import supermarket.model.offers.XForAmount
 
 @DisplayName("multiple offers applied to same item test")
 class MultipleOffersTest {
@@ -31,7 +31,7 @@ class MultipleOffersTest {
         catalog.addProduct(product = product, price = 5.0)
         teller.addOffers(
             TwoForAmount(product = product, amount = 8.0),
-            FiveForAmount(product = product, amount = 40.0)
+            XForAmount(product = product, quantityForOffer = 5.0, amount = 40.0)
         )
 
         // when
@@ -51,7 +51,7 @@ class MultipleOffersTest {
 
         catalog.addProduct(product = product, price = 5.0)
         teller.addOffers(
-            FiveForAmount(product = product, amount = 40.0),
+            XForAmount(product = product, quantityForOffer = 5.0, amount = 40.0),
             TwoForAmount(product = product, amount = 8.0)
         )
 
@@ -115,9 +115,9 @@ class MultipleOffersTest {
         catalog.addProduct(product = product, price = 5.0)
         teller.addOffers(
             ThreeForTwo(product = product),
-            FiveForAmount(product = product, amount = 10.0),
+            XForAmount(product = product, quantityForOffer = 5.0, amount = 10.0),
             TwoForAmount(product = product, amount = 8.0),
-            FiveForAmount(product = product, amount = 20.0)
+            XForAmount(product = product, quantityForOffer = 5.0, amount = 20.0)
         )
 
         // when
@@ -137,7 +137,7 @@ class MultipleOffersTest {
 
         catalog.addProduct(product = product, price = 5.0)
         teller.addOffers(
-            FiveForAmount(product = product, amount = 20.0),
+            XForAmount(product = product, quantityForOffer = 5.0, amount = 20.0),
             ThreeForTwo(product = product),
             TenPercentDiscount(product = product),
             TwoForAmount(product = product, amount = 8.0)
@@ -161,7 +161,7 @@ class MultipleOffersTest {
         catalog.addProduct(product = product, price = 5.0)
         teller.addOffers(
             TwoForAmount(product = product, amount = 8.0),
-            FiveForAmount(product = product, amount = 20.0),
+            XForAmount(product = product, quantityForOffer = 5.0, amount = 20.0),
             ThreeForTwo(product = product),
             TenPercentDiscount(product = product)
         )
@@ -185,7 +185,7 @@ class MultipleOffersTest {
         teller.addOffers(
             TenPercentDiscount(product = product),
             TwoForAmount(product = product, amount = 8.0),
-            FiveForAmount(product = product, amount = 20.0),
+            XForAmount(product = product, quantityForOffer = 5.0, amount = 20.0),
             ThreeForTwo(product = product)
         )
 

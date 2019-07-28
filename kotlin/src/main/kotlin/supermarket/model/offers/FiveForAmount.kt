@@ -4,6 +4,13 @@ import supermarket.model.Discount
 import supermarket.model.Product
 import supermarket.model.SupermarketCatalog
 
+@Deprecated(
+    message = "XForAmount should be used instead",
+    replaceWith = ReplaceWith(
+        expression = "XForAmount(product, 5.0, amount)",
+        imports = ["supermarket.model.offers.XForAmount"]
+    )
+)
 data class FiveForAmount(
     val product: Product,
     val amount: Double
