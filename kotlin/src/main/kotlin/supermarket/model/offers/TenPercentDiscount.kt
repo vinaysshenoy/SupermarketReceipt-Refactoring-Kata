@@ -22,4 +22,6 @@ data class TenPercentDiscount(
             quantity * unitPrice * discountPercent / 100.0
         )
     }
+
+    override fun applicableProducts() = listOf(product)
 }

@@ -1,13 +1,38 @@
 package supermarket.model
 
-import supermarket.model.offers.Offer
-
+import supermarket.model.offers.*
 
 class Teller(private val catalog: SupermarketCatalog) {
-    private val offers = mutableMapOf<Product, Offer>()
+    private var offers = listOf<Offer>()
 
+    @Deprecated(
+        message = "Use the version that takes the Offer directly",
+        replaceWith = ReplaceWith(expression = "addSpecialOffer()")
+    )
     fun addSpecialOffer(offerType: SpecialOfferType, product: Product, argument: Double) {
-        this.offers[product] = Offer.create(offerType, product, argument)
+        val offerToAdd = when (offerType) {
+            SpecialOfferType.ThreeForTwo -> ThreeForTwo(product = product)
+            SpecialOfferType.TenPercentDiscount -> TenPercentDiscount(
+                product = product
+            )
+            SpecialOfferType.TwoForAmount -> TwoForAmount(
+                product = product,
+                amount = argument
+            )
+            SpecialOfferType.FiveForAmount -> FiveForAmount(
+                product = product,
+                amount = argument
+            )
+        }
+        addSpecialOffer(offerToAdd)
+    }
+
+    fun addSpecialOffer(offerToAdd: Offer) {
+        val applicableProductsOfNewOffer = offerToAdd.applicableProducts()
+
+        offers = offers
+            .filter { offer -> offer.applicableProducts() != applicableProductsOfNewOffer }
+            .plus(offerToAdd)
     }
 
     fun checksOutArticlesFrom(theCart: ShoppingCart): Receipt {
