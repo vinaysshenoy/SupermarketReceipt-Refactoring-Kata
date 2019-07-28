@@ -1,5 +1,7 @@
 package supermarket.model
 
+import supermarket.model.offers.Offer
+
 class ShoppingCart {
     private val items = mutableListOf<ProductQuantity>()
 

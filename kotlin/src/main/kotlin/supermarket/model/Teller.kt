@@ -1,5 +1,7 @@
 package supermarket.model
 
+import supermarket.model.offers.Offer
+
 
 class Teller(private val catalog: SupermarketCatalog) {
     private val offers = mutableMapOf<Product, Offer>()
