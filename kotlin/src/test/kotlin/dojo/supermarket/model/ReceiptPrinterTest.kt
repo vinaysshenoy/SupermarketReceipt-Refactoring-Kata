@@ -1,6 +1,5 @@
 package dojo.supermarket.model
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -20,7 +19,6 @@ import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.TwoForAmount
 import java.util.stream.Stream
 
-@Disabled("Disabled until refactoring over. Use ReceiptPrinter in the interim because it is unaffected by ordering")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReceiptPrinterTest {
 
@@ -157,10 +155,10 @@ product 3      30.00
 product 5      87.50
   25.00 * 3.500
 product 3      15.00
-2 for 18.5(product 1)--17.00
-5 for 95.0(product 4)-15.00
 3 for 2(product 3)-15.00
+2 for 18.5(product 1)--17.00
 10.0% off(product 5)-8.75
+5 for 95.0(product 4)-15.00
 
 Total:        310.75"""
             ),
@@ -179,10 +177,10 @@ product 3                          30.00
 product 5                          87.50
   25.00 * 3.500
 product 3                          15.00
-2 for 18.5(product 1)            --17.00
-5 for 95.0(product 4)             -15.00
 3 for 2(product 3)                -15.00
+2 for 18.5(product 1)            --17.00
 10.0% off(product 5)               -8.75
+5 for 95.0(product 4)             -15.00
 
 Total:                            310.75"""
             ),
@@ -201,10 +199,10 @@ product 3                                              30.00
 product 5                                              87.50
   25.00 * 3.500
 product 3                                              15.00
-2 for 18.5(product 1)                                --17.00
-5 for 95.0(product 4)                                 -15.00
 3 for 2(product 3)                                    -15.00
+2 for 18.5(product 1)                                --17.00
 10.0% off(product 5)                                   -8.75
+5 for 95.0(product 4)                                 -15.00
 
 Total:                                                310.75"""
             )
