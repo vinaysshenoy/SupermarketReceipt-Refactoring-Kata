@@ -12,7 +12,6 @@ import supermarket.model.ShoppingCart
 import supermarket.model.Teller
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
-import supermarket.model.offers.TwoForAmount
 import supermarket.model.offers.XForAmount
 
 class SupermarketTest {
@@ -142,7 +141,7 @@ class SupermarketTest {
 
         teller.addOffers(
             ThreeForTwo(product3),
-            TwoForAmount(product1, 18.5),
+            XForAmount(product1, 2.0, 18.5),
             TenPercentDiscount(product5),
             XForAmount(product4, 5.0, 95.0)
         )

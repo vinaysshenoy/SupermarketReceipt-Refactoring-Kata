@@ -15,7 +15,6 @@ import supermarket.model.ShoppingCart
 import supermarket.model.Teller
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
-import supermarket.model.offers.TwoForAmount
 import supermarket.model.offers.XForAmount
 import java.util.stream.Stream
 
@@ -106,7 +105,7 @@ Total:                                                  0.00"""
 
         teller.addOffers(
             ThreeForTwo(product = product3),
-            TwoForAmount(product = product1, amount = 18.5),
+            XForAmount(product = product1, quantityForOffer = 2.0, amount = 18.5),
             TenPercentDiscount(product = product5),
             XForAmount(product = product4, quantityForOffer = 5.0, amount = 95.0)
         )
@@ -233,7 +232,7 @@ Total:                                                310.75"""
 
         teller.addOffers(
             ThreeForTwo(product3),
-            TwoForAmount(product1, 18.5),
+            XForAmount(product1, 2.0, 18.5),
             TenPercentDiscount(product5),
             XForAmount(product4, 5.0, 95.0)
         )
