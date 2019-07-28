@@ -2,38 +2,90 @@ package supermarket.model
 
 sealed class Offer {
 
-    abstract val product: Product
-
-    abstract val argument: Double
+    abstract fun discountIfApplicable(productQuantities: Map<Product, Double>, catalog: SupermarketCatalog): Discount?
 
     data class ThreeForTwo(
-        override val product: Product
+        val product: Product
     ) : Offer() {
 
-        override val argument = -1.0
+        override fun discountIfApplicable(
+            productQuantities: Map<Product, Double>,
+            catalog: SupermarketCatalog
+        ): Discount? {
+            val quantity = productQuantities.getValue(product)
+            val quantityAsInt = quantity.toInt()
+            val unitPrice = catalog.getUnitPrice(product)
+
+            val minimumQuantityToApplyOffer = 3
+            return if (quantityAsInt >= minimumQuantityToApplyOffer) {
+                val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+                val discountAmount =
+                    quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
+                Discount(product, "3 for 2", discountAmount)
+            } else null
+        }
     }
 
     data class TenPercentDiscount(
-        override val product: Product
+        val product: Product
     ) : Offer() {
 
-        override val argument = 10.0
+        private val discountPercent = 10.0
+
+        override fun discountIfApplicable(
+            productQuantities: Map<Product, Double>,
+            catalog: SupermarketCatalog
+        ): Discount? {
+            val quantity = productQuantities.getValue(product)
+            val unitPrice = catalog.getUnitPrice(product)
+            return Discount(product, "$discountPercent% off", quantity * unitPrice * discountPercent / 100.0)
+        }
     }
 
     data class TwoForAmount(
-        override val product: Product,
+        val product: Product,
         val amount: Double
     ) : Offer() {
 
-        override val argument = amount
+        override fun discountIfApplicable(
+            productQuantities: Map<Product, Double>,
+            catalog: SupermarketCatalog
+        ): Discount? {
+            val quantity = productQuantities.getValue(product)
+            val quantityAsInt = quantity.toInt()
+            val unitPrice = catalog.getUnitPrice(product)
+
+            val minimumQuantityToApplyOffer = 2
+            return if (quantityAsInt >= minimumQuantityToApplyOffer) {
+                val total =
+                    amount * quantityAsInt / minimumQuantityToApplyOffer + quantityAsInt % 2 * unitPrice
+                val discountN = unitPrice * quantity - total
+                Discount(product, "2 for $amount", discountN)
+            } else null
+        }
     }
 
     data class FiveForAmount(
-        override val product: Product,
+        val product: Product,
         val amount: Double
     ) : Offer() {
 
-        override val argument = amount
+        override fun discountIfApplicable(
+            productQuantities: Map<Product, Double>,
+            catalog: SupermarketCatalog
+        ): Discount? {
+            val quantity = productQuantities.getValue(product)
+            val quantityAsInt = quantity.toInt()
+            val unitPrice = catalog.getUnitPrice(product)
+
+            val minimumQuantityToApplyOffer = 5
+            return if (quantityAsInt >= minimumQuantityToApplyOffer) {
+                val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+                val discountTotal =
+                    unitPrice * quantity - (amount * numberOfXs + quantityAsInt % 5 * unitPrice)
+                Discount(product, "$minimumQuantityToApplyOffer for $amount", discountTotal)
+            } else null
+        }
     }
 
     companion object {
