@@ -5,8 +5,11 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import supermarket.model.*
-import supermarket.model.SpecialOfferType.*
+import supermarket.model.Product
+import supermarket.model.ProductUnit
+import supermarket.model.ShoppingCart
+import supermarket.model.Teller
+import supermarket.model.offers.TenPercentDiscount
 
 @DisplayName("Ten percent discount offer test")
 class TenPercentDiscountOfferTest {
@@ -23,7 +26,7 @@ class TenPercentDiscountOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product, argument = 10.0)
+        teller.addOffers(TenPercentDiscount(product = product))
 
         // when
         cart.addItemQuantity(product = product, quantity = 1.0)
@@ -41,7 +44,7 @@ class TenPercentDiscountOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.5)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product, argument = 10.0)
+        teller.addOffers(TenPercentDiscount(product = product))
 
         // when
         cart.addItemQuantity(product = product, quantity = 12.0)
@@ -63,7 +66,7 @@ class TenPercentDiscountOfferTest {
             addProduct(product = product1, price = 10.0)
             addProduct(product = product2, price = 15.0)
         }
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product1, argument = 10.0)
+        teller.addOffers(TenPercentDiscount(product = product1))
 
         // when
         cart.apply {
@@ -88,7 +91,8 @@ class TenPercentDiscountOfferTest {
             addProduct(product = product1, price = 10.0)
             addProduct(product = product2, price = 15.0)
         }
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product2, argument = 10.0)
+        teller.addOffers(TenPercentDiscount(product = product2))
+
 
         // when
         cart.apply {
@@ -113,8 +117,10 @@ class TenPercentDiscountOfferTest {
             addProduct(product = product1, price = 10.0)
             addProduct(product = product2, price = 15.0)
         }
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product1, argument = 10.0)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product2, argument = 10.0)
+        teller.addOffers(
+            TenPercentDiscount(product = product1),
+            TenPercentDiscount(product = product2)
+        )
 
         // when
         cart.apply {

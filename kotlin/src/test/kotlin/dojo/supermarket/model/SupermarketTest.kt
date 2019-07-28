@@ -6,7 +6,14 @@ import strikt.api.expectThat
 import strikt.assertions.failed
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
-import supermarket.model.*
+import supermarket.model.Product
+import supermarket.model.ProductUnit
+import supermarket.model.ShoppingCart
+import supermarket.model.Teller
+import supermarket.model.offers.FiveForAmount
+import supermarket.model.offers.TenPercentDiscount
+import supermarket.model.offers.ThreeForTwo
+import supermarket.model.offers.TwoForAmount
 
 class SupermarketTest {
 
@@ -133,12 +140,13 @@ class SupermarketTest {
             addProduct(product = product5, price = 25.0)
         }
 
-        teller.apply {
-            addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product3, argument = -1.0)
-            addSpecialOffer(offerType = SpecialOfferType.TwoForAmount, product = product1, argument = 18.5)
-            addSpecialOffer(offerType = SpecialOfferType.TenPercentDiscount, product = product5, argument = 10.0)
-            addSpecialOffer(offerType = SpecialOfferType.FiveForAmount, product = product4, argument = 95.0)
-        }
+        teller.addOffers(
+            ThreeForTwo(product3),
+            TwoForAmount(product1, 18.5),
+            TenPercentDiscount(product5),
+            FiveForAmount(product4, 95.0)
+        )
+
 
         // when
         cart.apply {
