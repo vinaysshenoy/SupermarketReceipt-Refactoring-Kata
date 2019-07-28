@@ -29,65 +29,77 @@ class ShoppingCart {
     }
 
     fun handleOffers(receipt: Receipt, offers: Map<Product, Offer>, catalog: SupermarketCatalog) {
-        for (product in productQuantities().keys) {
-            val quantity = productQuantities.getValue(product)
-            if (offers.containsKey(product)) {
-                val offer = offers.getValue(product)
-                val unitPrice = catalog.getUnitPrice(product)
-
-                discountIfOfferApplicable(
-                    offer = offer,
-                    quantity = quantity,
-                    unitPrice = unitPrice,
-                    product = product
-                )?.let { discount ->
-                    receipt.addDiscount(discount)
-                }
-            }
-        }
+        applyOffersToProducts(
+            products = items,
+            offers = offers.values.toList(),
+            catalog = catalog
+        ).forEach(receipt::addDiscount)
     }
+}
 
-    private fun discountIfOfferApplicable(
-        offer: Offer,
-        quantity: Double,
-        unitPrice: Double,
-        product: Product
-    ): Discount? {
+private fun applyOffersToProducts(
+    products: List<ProductQuantity>,
+    offers: List<Offer>,
+    catalog: SupermarketCatalog
+): List<Discount> {
+    val combinedProductQuantities: Map<Product, Double> = products
+        .groupBy { it.product }
+        .map { (product, quantities) ->
+            val totalQuantityForProduct = quantities.sumByDouble { it.quantity }
 
-        val quantityAsInt = quantity.toInt()
+            product to totalQuantityForProduct
+        }
+        .toMap()
 
-        return when (offer) {
-            is ThreeForTwo -> {
-                val minimumQuantityToApplyOffer = 3
-                if (quantityAsInt >= minimumQuantityToApplyOffer) {
-                    val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
-                    val discountAmount =
-                        quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
-                    Discount(product, "3 for 2", discountAmount)
-                } else null
-            }
-            is TwoForAmount -> {
-                val minimumQuantityToApplyOffer = 2
-                if (quantityAsInt >= minimumQuantityToApplyOffer) {
-                    val total =
-                        offer.argument * quantityAsInt / minimumQuantityToApplyOffer + quantityAsInt % 2 * unitPrice
-                    val discountN = unitPrice * quantity - total
-                    Discount(product, "2 for " + offer.argument, discountN)
-                } else null
+    return offers.mapNotNull { offer ->
+        discountIfOfferApplicable(
+            offer = offer,
+            quantity = combinedProductQuantities.getValue(offer.product),
+            unitPrice = catalog.getUnitPrice(offer.product),
+            product = offer.product
+        )
+    }
+}
 
-            }
-            is FiveForAmount -> {
-                val minimumQuantityToApplyOffer = 5
-                if (quantityAsInt >= minimumQuantityToApplyOffer) {
-                    val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
-                    val discountTotal =
-                        unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice)
-                    Discount(product, minimumQuantityToApplyOffer.toString() + " for " + offer.argument, discountTotal)
-                } else null
-            }
-            is TenPercentDiscount -> {
-                Discount(product, offer.argument.toString() + "% off", quantity * unitPrice * offer.argument / 100.0)
-            }
+private fun discountIfOfferApplicable(
+    offer: Offer,
+    quantity: Double,
+    unitPrice: Double,
+    product: Product
+): Discount? {
+    val quantityAsInt = quantity.toInt()
+
+    return when (offer) {
+        is ThreeForTwo -> {
+            val minimumQuantityToApplyOffer = 3
+            if (quantityAsInt >= minimumQuantityToApplyOffer) {
+                val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+                val discountAmount =
+                    quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
+                Discount(product, "3 for 2", discountAmount)
+            } else null
+        }
+        is TwoForAmount -> {
+            val minimumQuantityToApplyOffer = 2
+            if (quantityAsInt >= minimumQuantityToApplyOffer) {
+                val total =
+                    offer.argument * quantityAsInt / minimumQuantityToApplyOffer + quantityAsInt % 2 * unitPrice
+                val discountN = unitPrice * quantity - total
+                Discount(product, "2 for " + offer.argument, discountN)
+            } else null
+
+        }
+        is FiveForAmount -> {
+            val minimumQuantityToApplyOffer = 5
+            if (quantityAsInt >= minimumQuantityToApplyOffer) {
+                val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+                val discountTotal =
+                    unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice)
+                Discount(product, minimumQuantityToApplyOffer.toString() + " for " + offer.argument, discountTotal)
+            } else null
+        }
+        is TenPercentDiscount -> {
+            Discount(product, offer.argument.toString() + "% off", quantity * unitPrice * offer.argument / 100.0)
         }
     }
 }
