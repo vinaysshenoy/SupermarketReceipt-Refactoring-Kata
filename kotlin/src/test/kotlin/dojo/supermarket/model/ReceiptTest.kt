@@ -10,10 +10,10 @@ import supermarket.model.ProductUnit
 import supermarket.model.ReceiptItem
 import supermarket.model.ShoppingCart
 import supermarket.model.Teller
-import supermarket.model.offers.FiveForAmount
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.TwoForAmount
+import supermarket.model.offers.XForAmount
 
 class ReceiptTest {
 
@@ -67,7 +67,7 @@ class ReceiptTest {
             ThreeForTwo(product = product3),
             TwoForAmount(product = product1, amount = 18.5),
             TenPercentDiscount(product = product5),
-            FiveForAmount(product = product4, amount = 95.0)
+            XForAmount(product = product4, quantityForOffer = 5.0, amount = 95.0)
         )
 
         // when
@@ -134,7 +134,7 @@ class ReceiptTest {
             ThreeForTwo(product3),
             TwoForAmount(product1, 18.5),
             TenPercentDiscount(product5),
-            FiveForAmount(product4, 95.0)
+            XForAmount(product4, 5.0, 95.0)
         )
 
         // when

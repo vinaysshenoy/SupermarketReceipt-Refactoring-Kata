@@ -9,7 +9,7 @@ import supermarket.model.Product
 import supermarket.model.ProductUnit
 import supermarket.model.ShoppingCart
 import supermarket.model.Teller
-import supermarket.model.offers.FiveForAmount
+import supermarket.model.offers.XForAmount
 
 @DisplayName("five for amount offer test")
 class FiveForAmountOfferTest {
@@ -26,7 +26,7 @@ class FiveForAmountOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 10.0)
-        teller.addOffers(FiveForAmount(product, 45.0))
+        teller.addOffers(XForAmount(product, 5.0, 45.0))
 
         // when
         cart.addItemQuantity(product = product, quantity = 1.0)
@@ -44,7 +44,7 @@ class FiveForAmountOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 10.0)
-        teller.addOffers(FiveForAmount(product = product, amount = 45.0))
+        teller.addOffers(XForAmount(product = product, quantityForOffer = 5.0, amount = 45.0))
 
         // when
         cart.addItemQuantity(product = product, quantity = 2.0)
@@ -62,7 +62,7 @@ class FiveForAmountOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 10.0)
-        teller.addOffers(FiveForAmount(product = product, amount = 45.0))
+        teller.addOffers(XForAmount(product = product, quantityForOffer = 5.0, amount = 45.0))
 
         // when
         cart.addItemQuantity(product = product, quantity = 3.0)
@@ -80,7 +80,7 @@ class FiveForAmountOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 10.0)
-        teller.addOffers(FiveForAmount(product = product, amount = 45.0))
+        teller.addOffers(XForAmount(product = product, quantityForOffer = 5.0, amount = 45.0))
 
         // when
         cart.addItemQuantity(product = product, quantity = 4.0)
@@ -98,7 +98,7 @@ class FiveForAmountOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 10.0)
-        teller.addOffers(FiveForAmount(product = product, amount = 45.0))
+        teller.addOffers(XForAmount(product = product, quantityForOffer = 5.0, amount = 45.0))
 
         // when
         cart.addItemQuantity(product = product, quantity = 5.0)
@@ -116,7 +116,7 @@ class FiveForAmountOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 10.0)
-        teller.addOffers(FiveForAmount(product = product, amount = 45.0))
+        teller.addOffers(XForAmount(product = product, quantityForOffer = 5.0, amount = 45.0))
 
         // when
         cart.addItemQuantity(product = product, quantity = 6.0)
@@ -138,7 +138,7 @@ class FiveForAmountOfferTest {
             addProduct(product = product1, price = 10.0)
             addProduct(product = product2, price = 20.0)
         }
-        teller.addOffers(FiveForAmount(product = product1, amount = 42.0))
+        teller.addOffers(XForAmount(product = product1, quantityForOffer = 5.0, amount = 42.0))
 
         // when
         cart.addItemQuantity(product = product1, quantity = 5.0)
@@ -161,7 +161,7 @@ class FiveForAmountOfferTest {
             addProduct(product = product1, price = 10.0)
             addProduct(product = product2, price = 20.0)
         }
-        teller.addOffers(FiveForAmount(product = product2, amount = 47.0))
+        teller.addOffers(XForAmount(product = product2, quantityForOffer = 5.0, amount = 47.0))
 
         // when
         cart.addItemQuantity(product = product1, quantity = 5.0)
@@ -185,8 +185,8 @@ class FiveForAmountOfferTest {
             addProduct(product = product2, price = 20.0)
         }
         teller.addOffers(
-            FiveForAmount(product = product1, amount = 43.0),
-            FiveForAmount(product = product2, amount = 84.0)
+            XForAmount(product = product1, quantityForOffer = 5.0, amount = 43.0),
+            XForAmount(product = product2, quantityForOffer = 5.0, amount = 84.0)
         )
 
         // when
