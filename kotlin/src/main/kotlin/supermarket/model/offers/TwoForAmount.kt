@@ -25,4 +25,6 @@ data class TwoForAmount(
             Discount(product, "2 for $amount", discountN)
         } else null
     }
+
+    override fun applicableProducts() = listOf(product)
 }

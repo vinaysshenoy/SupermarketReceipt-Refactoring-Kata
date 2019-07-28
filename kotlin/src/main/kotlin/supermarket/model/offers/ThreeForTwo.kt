@@ -24,4 +24,6 @@ data class ThreeForTwo(
             Discount(product, "3 for 2", discountAmount)
         } else null
     }
+
+    override fun applicableProducts() = listOf(product)
 }

@@ -25,4 +25,6 @@ data class FiveForAmount(
             Discount(product, "$minimumQuantityToApplyOffer for $amount", discountTotal)
         } else null
     }
+
+    override fun applicableProducts() = listOf(product)
 }
