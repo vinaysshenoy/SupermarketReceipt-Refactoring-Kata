@@ -5,8 +5,14 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import supermarket.model.*
-import supermarket.model.SpecialOfferType.*
+import supermarket.model.Product
+import supermarket.model.ProductUnit
+import supermarket.model.ShoppingCart
+import supermarket.model.Teller
+import supermarket.model.offers.FiveForAmount
+import supermarket.model.offers.TenPercentDiscount
+import supermarket.model.offers.ThreeForTwo
+import supermarket.model.offers.TwoForAmount
 
 @DisplayName("multiple offers applied to same item test")
 class MultipleOffersTest {
@@ -23,8 +29,10 @@ class MultipleOffersTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = TwoForAmount, product = product, argument = 8.0)
-        teller.addSpecialOffer(offerType = FiveForAmount, product = product, argument = 40.0)
+        teller.addOffers(
+            TwoForAmount(product = product, amount = 8.0),
+            FiveForAmount(product = product, amount = 40.0)
+        )
 
         // when
         cart.addItemQuantity(product = product, quantity = 5.0)
@@ -42,8 +50,10 @@ class MultipleOffersTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = FiveForAmount, product = product, argument = 40.0)
-        teller.addSpecialOffer(offerType = TwoForAmount, product = product, argument = 8.0)
+        teller.addOffers(
+            FiveForAmount(product = product, amount = 40.0),
+            TwoForAmount(product = product, amount = 8.0)
+        )
 
         // when
         cart.addItemQuantity(product = product, quantity = 5.0)
@@ -61,8 +71,10 @@ class MultipleOffersTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = TwoForAmount, product = product, argument = 8.0)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product, argument = 10.0)
+        teller.addOffers(
+            TwoForAmount(product = product, amount = 8.0),
+            TenPercentDiscount(product = product)
+        )
 
         // when
         cart.addItemQuantity(product = product, quantity = 2.0)
@@ -80,8 +92,10 @@ class MultipleOffersTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product, argument = 10.0)
-        teller.addSpecialOffer(offerType = TwoForAmount, product = product, argument = 8.0)
+        teller.addOffers(
+            TenPercentDiscount(product = product),
+            TwoForAmount(product = product, amount = 8.0)
+        )
 
         // when
         cart.addItemQuantity(product = product, quantity = 2.0)
@@ -99,10 +113,12 @@ class MultipleOffersTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = ThreeForTwo, product = product, argument = -1.0)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product, argument = 10.0)
-        teller.addSpecialOffer(offerType = TwoForAmount, product = product, argument = 8.0)
-        teller.addSpecialOffer(offerType = FiveForAmount, product = product, argument = 20.0)
+        teller.addOffers(
+            ThreeForTwo(product = product),
+            FiveForAmount(product = product, amount = 10.0),
+            TwoForAmount(product = product, amount = 8.0),
+            FiveForAmount(product = product, amount = 20.0)
+        )
 
         // when
         cart.addItemQuantity(product = product, quantity = 5.0)
@@ -120,10 +136,12 @@ class MultipleOffersTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = FiveForAmount, product = product, argument = 20.0)
-        teller.addSpecialOffer(offerType = ThreeForTwo, product = product, argument = -1.0)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product, argument = 10.0)
-        teller.addSpecialOffer(offerType = TwoForAmount, product = product, argument = 8.0)
+        teller.addOffers(
+            FiveForAmount(product = product, amount = 20.0),
+            ThreeForTwo(product = product),
+            TenPercentDiscount(product = product),
+            TwoForAmount(product = product, amount = 8.0)
+        )
 
         // when
         cart.addItemQuantity(product = product, quantity = 5.0)
@@ -141,10 +159,12 @@ class MultipleOffersTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = TwoForAmount, product = product, argument = 8.0)
-        teller.addSpecialOffer(offerType = FiveForAmount, product = product, argument = 20.0)
-        teller.addSpecialOffer(offerType = ThreeForTwo, product = product, argument = -1.0)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product, argument = 10.0)
+        teller.addOffers(
+            TwoForAmount(product = product, amount = 8.0),
+            FiveForAmount(product = product, amount = 20.0),
+            ThreeForTwo(product = product),
+            TenPercentDiscount(product = product)
+        )
 
         // when
         cart.addItemQuantity(product = product, quantity = 5.0)
@@ -162,10 +182,12 @@ class MultipleOffersTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = TenPercentDiscount, product = product, argument = 10.0)
-        teller.addSpecialOffer(offerType = TwoForAmount, product = product, argument = 8.0)
-        teller.addSpecialOffer(offerType = FiveForAmount, product = product, argument = 20.0)
-        teller.addSpecialOffer(offerType = ThreeForTwo, product = product, argument = -1.0)
+        teller.addOffers(
+            TenPercentDiscount(product = product),
+            TwoForAmount(product = product, amount = 8.0),
+            FiveForAmount(product = product, amount = 20.0),
+            ThreeForTwo(product = product)
+        )
 
         // when
         cart.addItemQuantity(product = product, quantity = 5.0)

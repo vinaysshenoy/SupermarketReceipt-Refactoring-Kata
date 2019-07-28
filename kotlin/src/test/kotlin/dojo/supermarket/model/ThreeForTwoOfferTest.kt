@@ -5,7 +5,11 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import supermarket.model.*
+import supermarket.model.Product
+import supermarket.model.ProductUnit
+import supermarket.model.ShoppingCart
+import supermarket.model.Teller
+import supermarket.model.offers.ThreeForTwo
 
 @DisplayName("three for two offers test")
 class ThreeForTwoOfferTest {
@@ -22,7 +26,8 @@ class ThreeForTwoOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product, argument = -1.0)
+        teller.addOffers(ThreeForTwo(product = product))
+
 
         // when
         cart.addItemQuantity(product = product, quantity = 1.0)
@@ -40,7 +45,8 @@ class ThreeForTwoOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product, argument = -1.0)
+        teller.addOffers(ThreeForTwo(product = product))
+
 
         // when
         cart.addItemQuantity(product = product, quantity = 2.0)
@@ -58,7 +64,7 @@ class ThreeForTwoOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product, argument = -1.0)
+        teller.addOffers(ThreeForTwo(product = product))
 
         // when
         cart.addItemQuantity(product = product, quantity = 3.0)
@@ -76,7 +82,7 @@ class ThreeForTwoOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product, argument = -1.0)
+        teller.addOffers(ThreeForTwo(product = product))
 
         // when
         cart.addItemQuantity(product = product, quantity = 4.0)
@@ -94,7 +100,7 @@ class ThreeForTwoOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product, argument = -1.0)
+        teller.addOffers(ThreeForTwo(product = product))
 
         // when
         cart.addItemQuantity(product = product, quantity = 5.0)
@@ -112,7 +118,7 @@ class ThreeForTwoOfferTest {
         val product = Product("product", productUnit)
 
         catalog.addProduct(product = product, price = 5.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product, argument = -1.0)
+        teller.addOffers(ThreeForTwo(product = product))
 
         // when
         cart.addItemQuantity(product = product, quantity = 6.0)
@@ -132,8 +138,10 @@ class ThreeForTwoOfferTest {
 
         catalog.addProduct(product = product1, price = 5.0)
         catalog.addProduct(product = product2, price = 0.5)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product1, argument = -1.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product2, argument = -1.0)
+        teller.addOffers(
+            ThreeForTwo(product = product1),
+            ThreeForTwo(product = product2)
+        )
 
         // when
         cart.apply {
@@ -158,8 +166,10 @@ class ThreeForTwoOfferTest {
         catalog.addProduct(product = product1, price = 5.0)
         catalog.addProduct(product = product2, price = 0.5)
         catalog.addProduct(product = product3, price = 100.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product1, argument = -1.0)
-        teller.addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product2, argument = -1.0)
+        teller.addOffers(
+            ThreeForTwo(product = product1),
+            ThreeForTwo(product = product2)
+        )
 
         // when
         cart.apply {

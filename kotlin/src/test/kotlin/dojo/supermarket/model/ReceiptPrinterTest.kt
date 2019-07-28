@@ -10,7 +10,14 @@ import org.junit.jupiter.params.provider.MethodSource
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import supermarket.ReceiptPrinter
-import supermarket.model.*
+import supermarket.model.Product
+import supermarket.model.ProductUnit
+import supermarket.model.ShoppingCart
+import supermarket.model.Teller
+import supermarket.model.offers.FiveForAmount
+import supermarket.model.offers.TenPercentDiscount
+import supermarket.model.offers.ThreeForTwo
+import supermarket.model.offers.TwoForAmount
 import java.util.stream.Stream
 
 @Disabled("Disabled until refactoring over. Use ReceiptPrinter in the interim because it is unaffected by ordering")
@@ -99,12 +106,12 @@ Total:                                                  0.00"""
             addProduct(product = product5, price = 25.0)
         }
 
-        teller.apply {
-            addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product3, argument = -1.0)
-            addSpecialOffer(offerType = SpecialOfferType.TwoForAmount, product = product1, argument = 18.5)
-            addSpecialOffer(offerType = SpecialOfferType.TenPercentDiscount, product = product5, argument = 10.0)
-            addSpecialOffer(offerType = SpecialOfferType.FiveForAmount, product = product4, argument = 95.0)
-        }
+        teller.addOffers(
+            ThreeForTwo(product = product3),
+            TwoForAmount(product = product1, amount = 18.5),
+            TenPercentDiscount(product = product5),
+            FiveForAmount(product = product4, amount = 95.0)
+        )
 
         // when
         cart.apply {
@@ -226,12 +233,12 @@ Total:                                                310.75"""
             addProduct(product = product5, price = 25.0)
         }
 
-        teller.apply {
-            addSpecialOffer(offerType = SpecialOfferType.ThreeForTwo, product = product3, argument = -1.0)
-            addSpecialOffer(offerType = SpecialOfferType.TwoForAmount, product = product1, argument = 18.5)
-            addSpecialOffer(offerType = SpecialOfferType.TenPercentDiscount, product = product5, argument = 10.0)
-            addSpecialOffer(offerType = SpecialOfferType.FiveForAmount, product = product4, argument = 95.0)
-        }
+        teller.addOffers(
+            ThreeForTwo(product3),
+            TwoForAmount(product1, 18.5),
+            TenPercentDiscount(product5),
+            FiveForAmount(product4, 95.0)
+        )
 
         // when
         cart.apply {
