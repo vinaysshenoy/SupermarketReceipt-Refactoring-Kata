@@ -20,7 +20,11 @@ class XForAmount(
             val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
             val discountTotal =
                 unitPrice * quantity - (amount * numberOfXs + quantityAsInt % minimumQuantityToApplyOffer * unitPrice)
-            Discount(product, "$minimumQuantityToApplyOffer for $amount", discountTotal)
+            Discount(
+                products = setOf(product),
+                description = "$minimumQuantityToApplyOffer for $amount",
+                discountAmount = discountTotal
+            )
         } else null
     }
 

@@ -21,7 +21,11 @@ data class ThreeForTwo(
             val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
             val discountAmount =
                 quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
-            Discount(product, "3 for 2", discountAmount)
+            Discount(
+                products = setOf(product),
+                description = "3 for 2",
+                discountAmount = discountAmount
+            )
         } else null
     }
 

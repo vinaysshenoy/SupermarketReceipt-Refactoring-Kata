@@ -94,10 +94,10 @@ class ReceiptTest {
             ReceiptItem(product = product3, quantity = 1.0, price = 15.0, totalPrice = 15.0)
         )
         val expectedDiscounts = listOf(
-            Discount(product = product1, description = "2 for 18.5", discountAmount = -17.0),
-            Discount(product = product4, description = "5 for 95.0", discountAmount = 15.0),
-            Discount(product = product3, description = "3 for 2", discountAmount = 15.0),
-            Discount(product = product5, description = "10.0% off", discountAmount = 8.75)
+            Discount(products = setOf(product1), description = "2 for 18.5", discountAmount = -17.0),
+            Discount(products = setOf(product4), description = "5 for 95.0", discountAmount = 15.0),
+            Discount(products = setOf(product3), description = "3 for 2", discountAmount = 15.0),
+            Discount(products = setOf(product5), description = "10.0% off", discountAmount = 8.75)
         )
 
         expect {
@@ -159,7 +159,7 @@ class ReceiptTest {
         )
 
         val expectedDiscounts = listOf(
-            Discount(product = product5, description = "10.0% off", discountAmount = 8.75)
+            Discount(products = setOf(product5), description = "10.0% off", discountAmount = 8.75)
         )
 
         expect {

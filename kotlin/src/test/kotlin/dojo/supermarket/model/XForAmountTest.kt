@@ -88,7 +88,7 @@ class XForAmountTest {
 
         // then
         expect {
-            that(discount.product).isEqualTo(product)
+            that(discount.products).isEqualTo(setOf(product))
             that(discount.discountAmount).isEqualTo(expectedDiscount, tolerance = 0.001)
         }
     }
