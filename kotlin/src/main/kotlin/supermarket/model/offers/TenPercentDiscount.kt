@@ -23,5 +23,5 @@ data class TenPercentDiscount(
         )
     }
 
-    override fun applicableProducts() = listOf(product)
+    override fun applicableProducts(): Set<Product> = setOf(product)
 }

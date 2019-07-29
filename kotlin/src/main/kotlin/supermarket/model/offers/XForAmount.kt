@@ -24,5 +24,5 @@ class XForAmount(
         } else null
     }
 
-    override fun applicableProducts() = listOf(product)
+    override fun applicableProducts(): Set<Product> = setOf(product)
 }
