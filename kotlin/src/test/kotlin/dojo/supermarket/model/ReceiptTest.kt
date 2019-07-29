@@ -36,8 +36,8 @@ class ReceiptTest {
 
         // then
         expect {
-            that(receipt.getItems()).isEmpty()
-            that(receipt.getDiscounts()).isEmpty()
+            that(receipt.items).isEmpty()
+            that(receipt.discounts).isEmpty()
         }
     }
 
@@ -101,9 +101,9 @@ class ReceiptTest {
         )
 
         expect {
-            that(receipt.getItems())
+            that(receipt.items)
                 .containsExactlyInAnyOrder(expectedReceiptItems)
-            that(receipt.getDiscounts())
+            that(receipt.discounts)
                 .containsExactlyInAnyOrder(expectedDiscounts)
         }
     }
@@ -163,9 +163,9 @@ class ReceiptTest {
         )
 
         expect {
-            that(receipt.getItems())
+            that(receipt.items)
                 .containsExactlyInAnyOrder(expectedProductItems)
-            that(receipt.getDiscounts())
+            that(receipt.discounts)
                 .containsExactlyInAnyOrder(expectedDiscounts)
         }
     }
