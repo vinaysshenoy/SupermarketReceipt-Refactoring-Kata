@@ -17,10 +17,8 @@ class ShoppingCart {
         items.add(ProductQuantity(product, quantity))
     }
 
-    fun handleOffers(receipt: Receipt, offers: List<Offer>, catalog: SupermarketCatalog) {
-        offers
-            .mapNotNull { it.discountIfApplicable(accumulatedProductQuantities(), catalog) }
-            .forEach(receipt::addDiscount)
+    fun applyDiscounts(offers: List<Offer>, catalog: SupermarketCatalog): List<Discount> {
+        return offers.mapNotNull { it.discountIfApplicable(accumulatedProductQuantities(), catalog) }
     }
 
     private fun accumulatedProductQuantities(): Map<Product, Double> {

@@ -25,7 +25,9 @@ class Teller(private val catalog: SupermarketCatalog) {
             val price = quantity * unitPrice
             receipt.addProduct(p, quantity, unitPrice, price)
         }
-        theCart.handleOffers(receipt, this.offers, this.catalog)
+
+        theCart.applyDiscounts(offers, catalog)
+            .forEach(receipt::addDiscount)
 
         return receipt
     }
