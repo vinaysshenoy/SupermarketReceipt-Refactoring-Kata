@@ -8,6 +8,6 @@ interface Offer {
 
     fun discountIfApplicable(productQuantities: Map<Product, Double>, catalog: SupermarketCatalog): Discount?
 
-    fun applicableProducts(): List<Product>
+    fun applicableProducts(): Set<Product>
 }
 

@@ -25,5 +25,5 @@ data class ThreeForTwo(
         } else null
     }
 
-    override fun applicableProducts() = listOf(product)
+    override fun applicableProducts(): Set<Product> = setOf(product)
 }
