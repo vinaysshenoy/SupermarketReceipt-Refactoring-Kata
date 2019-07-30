@@ -28,25 +28,6 @@ class XForAmountTest {
         expectThat(applicableProducts).containsExactly(product)
     }
 
-    @Test
-    fun `no discount must be returned if the offer is not applicable to the product`() {
-        // given
-        val product = Product(name = "product", unit = ProductUnit.Each)
-        val productQuantities = mapOf(
-            product to 1.0
-        )
-        val offer = XForAmount(product = product, quantityForOffer = 2.0, amount = 1.0)
-
-        // when
-        val appliedDiscount = offer.discountIfApplicable(
-            productQuantities = productQuantities,
-            catalog = FakeCatalog()
-        )
-
-        // then
-        expectThat(appliedDiscount).isNull()
-    }
-
     data class ParamsForApplyingDiscountsTest(
         val product: Product,
         val priceOfProduct: Double,
@@ -81,7 +62,7 @@ class XForAmountTest {
         )
 
         // when
-        val discount: Discount = offer.discountIfApplicable(
+        val discount: Discount = offer.discount(
             productQuantities = productQuantities,
             catalog = catalog
         )!!

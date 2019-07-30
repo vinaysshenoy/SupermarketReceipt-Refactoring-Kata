@@ -7,7 +7,7 @@ import supermarket.model.SupermarketCatalog
 
 interface Offer {
 
-    fun discountIfApplicable(productQuantities: ProductQuantities, catalog: SupermarketCatalog): Discount?
+    fun discount(productQuantities: ProductQuantities, catalog: SupermarketCatalog): Discount
 
     fun applicableProducts(): Set<Product>
 
