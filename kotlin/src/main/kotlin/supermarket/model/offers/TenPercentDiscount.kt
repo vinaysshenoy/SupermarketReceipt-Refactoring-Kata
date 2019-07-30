@@ -11,10 +11,10 @@ data class TenPercentDiscount(
 
     private val discountPercent = 10.0
 
-    override fun discountIfApplicable(
+    override fun discount(
         productQuantities: ProductQuantities,
         catalog: SupermarketCatalog
-    ): Discount? {
+    ): Discount {
         val quantity = productQuantities.getValue(product)
         val unitPrice = catalog.getUnitPrice(product)
         return Discount(

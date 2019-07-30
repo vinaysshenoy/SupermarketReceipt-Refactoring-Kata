@@ -11,22 +11,22 @@ class XForAmount(
     val amount: Double
 ) : Offer {
 
-    override fun discountIfApplicable(productQuantities: ProductQuantities, catalog: SupermarketCatalog): Discount? {
+    override fun discount(productQuantities: ProductQuantities, catalog: SupermarketCatalog): Discount {
         val quantity = productQuantities.getValue(product)
         val quantityAsInt = quantity.toInt()
-
         val minimumQuantityToApplyOffer = quantityForOffer.toInt()
-        return if (quantityAsInt >= minimumQuantityToApplyOffer) {
-            val unitPrice = catalog.getUnitPrice(product)
-            val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
-            val discountTotal =
-                unitPrice * quantity - (amount * numberOfXs + quantityAsInt % minimumQuantityToApplyOffer * unitPrice)
-            Discount(
-                products = setOf(product),
-                description = "$minimumQuantityToApplyOffer for $amount",
-                discountAmount = discountTotal
-            )
-        } else null
+
+        require(quantityAsInt >= minimumQuantityToApplyOffer)
+
+        val unitPrice = catalog.getUnitPrice(product)
+        val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+        val discountTotal =
+            unitPrice * quantity - (amount * numberOfXs + quantityAsInt % minimumQuantityToApplyOffer * unitPrice)
+        return Discount(
+            products = setOf(product),
+            description = "$minimumQuantityToApplyOffer for $amount",
+            discountAmount = discountTotal
+        )
     }
 
     override fun applicableProducts(): Set<Product> = setOf(product)

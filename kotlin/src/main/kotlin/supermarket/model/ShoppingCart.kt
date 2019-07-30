@@ -19,7 +19,17 @@ class ShoppingCart {
     }
 
     fun applyDiscounts(offers: List<Offer>, catalog: SupermarketCatalog): List<Discount> {
-        return offers.mapNotNull { it.discountIfApplicable(accumulatedProductQuantities(), catalog) }
+        val productQuantities = accumulatedProductQuantities()
+
+        return offers
+            .asSequence()
+            .filter { offer -> offer.isOfferApplicable(productQuantities) }
+            .fold(mutableListOf<Discount>() to productQuantities) { (discounts, productQuantities), offer ->
+                discounts.add(offer.discount(productQuantities, catalog))
+                discounts to productQuantities
+            }
+            .first
+            .toList()
     }
 
     private fun accumulatedProductQuantities(): ProductQuantities {

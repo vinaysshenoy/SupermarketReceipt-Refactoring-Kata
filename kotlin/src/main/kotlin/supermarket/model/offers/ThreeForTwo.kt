@@ -9,25 +9,26 @@ data class ThreeForTwo(
     val product: Product
 ) : Offer {
 
-    override fun discountIfApplicable(
+    override fun discount(
         productQuantities: ProductQuantities,
         catalog: SupermarketCatalog
-    ): Discount? {
+    ): Discount {
+        val minimumQuantityToApplyOffer = 3
         val quantity = productQuantities.getValue(product)
         val quantityAsInt = quantity.toInt()
+
+        require(quantityAsInt >= minimumQuantityToApplyOffer)
+
         val unitPrice = catalog.getUnitPrice(product)
 
-        val minimumQuantityToApplyOffer = 3
-        return if (quantityAsInt >= minimumQuantityToApplyOffer) {
-            val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
-            val discountAmount =
-                quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
-            Discount(
-                products = setOf(product),
-                description = "3 for 2",
-                discountAmount = discountAmount
-            )
-        } else null
+        val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+        val discountAmount =
+            quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
+        return Discount(
+            products = setOf(product),
+            description = "3 for 2",
+            discountAmount = discountAmount
+        )
     }
 
     override fun applicableProducts(): Set<Product> = setOf(product)
