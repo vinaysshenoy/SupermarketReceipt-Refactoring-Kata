@@ -1,5 +1,6 @@
 package supermarket.model
 
+import supermarket.ProductQuantities
 import supermarket.model.offers.Offer
 
 class ShoppingCart {
@@ -21,7 +22,7 @@ class ShoppingCart {
         return offers.mapNotNull { it.discountIfApplicable(accumulatedProductQuantities(), catalog) }
     }
 
-    private fun accumulatedProductQuantities(): Map<Product, Double> {
+    private fun accumulatedProductQuantities(): ProductQuantities {
         return items
             .groupBy { it.product }
             .map { (product, quantities) ->

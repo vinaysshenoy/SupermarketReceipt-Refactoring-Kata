@@ -1,5 +1,6 @@
 package supermarket.model.offers
 
+import supermarket.ProductQuantities
 import supermarket.model.Discount
 import supermarket.model.Product
 import supermarket.model.SupermarketCatalog
@@ -10,7 +11,7 @@ class XForAmount(
     val amount: Double
 ) : Offer {
 
-    override fun discountIfApplicable(productQuantities: Map<Product, Double>, catalog: SupermarketCatalog): Discount? {
+    override fun discountIfApplicable(productQuantities: ProductQuantities, catalog: SupermarketCatalog): Discount? {
         val quantity = productQuantities.getValue(product)
         val quantityAsInt = quantity.toInt()
 
@@ -29,4 +30,12 @@ class XForAmount(
     }
 
     override fun applicableProducts(): Set<Product> = setOf(product)
+
+    override fun isOfferApplicable(productQuantities: ProductQuantities): Boolean {
+        return product in productQuantities && isProductQuantityEnoughToApplyOffer(productQuantities)
+    }
+
+    private fun isProductQuantityEnoughToApplyOffer(productQuantities: ProductQuantities): Boolean {
+        return productQuantities.getValue(product).toInt() >= quantityForOffer
+    }
 }
