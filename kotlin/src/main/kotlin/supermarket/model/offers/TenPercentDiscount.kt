@@ -1,5 +1,6 @@
 package supermarket.model.offers
 
+import supermarket.ProductQuantities
 import supermarket.model.Discount
 import supermarket.model.Product
 import supermarket.model.SupermarketCatalog
@@ -11,7 +12,7 @@ data class TenPercentDiscount(
     private val discountPercent = 10.0
 
     override fun discountIfApplicable(
-        productQuantities: Map<Product, Double>,
+        productQuantities: ProductQuantities,
         catalog: SupermarketCatalog
     ): Discount? {
         val quantity = productQuantities.getValue(product)
@@ -24,4 +25,8 @@ data class TenPercentDiscount(
     }
 
     override fun applicableProducts(): Set<Product> = setOf(product)
+
+    override fun isOfferApplicable(productQuantities: ProductQuantities): Boolean {
+        return product in productQuantities
+    }
 }
