@@ -69,7 +69,12 @@ class XForAmountTest {
 
         // then
         expect {
-            that(discount.products).isEqualTo(setOf(product))
+            val productsInDiscount = discount
+                .products
+                .map { it.product }
+                .toSet()
+
+            that(productsInDiscount).isEqualTo(setOf(product))
             that(discount.discountAmount).isEqualTo(expectedDiscount, tolerance = 0.001)
         }
     }

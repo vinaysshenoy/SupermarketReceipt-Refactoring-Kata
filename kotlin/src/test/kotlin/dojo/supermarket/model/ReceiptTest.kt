@@ -1,11 +1,11 @@
 package dojo.supermarket.model
 
 import org.junit.jupiter.api.Test
-import strikt.api.expect
-import strikt.assertions.containsExactlyInAnyOrder
-import strikt.assertions.isEmpty
+import strikt.api.*
+import strikt.assertions.*
 import supermarket.model.Discount
 import supermarket.model.Product
+import supermarket.model.ProductQuantity
 import supermarket.model.ProductUnit
 import supermarket.model.ReceiptItem
 import supermarket.model.ShoppingCart
@@ -94,10 +94,26 @@ class ReceiptTest {
             ReceiptItem(product = product3, quantity = 1.0, price = 15.0, totalPrice = 15.0)
         )
         val expectedDiscounts = listOf(
-            Discount(products = setOf(product1), description = "2 for 18.5", discountAmount = -17.0),
-            Discount(products = setOf(product4), description = "5 for 95.0", discountAmount = 15.0),
-            Discount(products = setOf(product3), description = "3 for 2", discountAmount = 15.0),
-            Discount(products = setOf(product5), description = "10.0% off", discountAmount = 8.75)
+            Discount(
+                products = setOf(ProductQuantity(product1, 4.0)),
+                description = "2 for 18.5",
+                discountAmount = -17.0
+            ),
+            Discount(
+                products = setOf(ProductQuantity(product4, 5.0)),
+                description = "5 for 95.0",
+                discountAmount = 15.0
+            ),
+            Discount(
+                products = setOf(ProductQuantity(product3, 3.0)),
+                description = "3 for 2",
+                discountAmount = 15.0
+            ),
+            Discount(
+                products = setOf(ProductQuantity(product5, 3.5)),
+                description = "10.0% off",
+                discountAmount = 8.75
+            )
         )
 
         expect {
@@ -159,7 +175,11 @@ class ReceiptTest {
         )
 
         val expectedDiscounts = listOf(
-            Discount(products = setOf(product5), description = "10.0% off", discountAmount = 8.75)
+            Discount(
+                products = setOf(ProductQuantity(product5, 3.5)),
+                description = "10.0% off",
+                discountAmount = 8.75
+            )
         )
 
         expect {
