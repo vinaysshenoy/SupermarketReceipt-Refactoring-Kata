@@ -3,6 +3,7 @@ package supermarket.model.offers
 import supermarket.ProductQuantities
 import supermarket.model.Discount
 import supermarket.model.Product
+import supermarket.model.ProductQuantity
 import supermarket.model.SupermarketCatalog
 
 class XForAmount(
@@ -19,11 +20,11 @@ class XForAmount(
         require(quantityAsInt >= minimumQuantityToApplyOffer)
 
         val unitPrice = catalog.getUnitPrice(product)
-        val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
+        val numberOfXs = (quantityAsInt / minimumQuantityToApplyOffer).toDouble()
         val discountTotal =
             unitPrice * quantity - (amount * numberOfXs + quantityAsInt % minimumQuantityToApplyOffer * unitPrice)
         return Discount(
-            products = setOf(product),
+            products = setOf(ProductQuantity(product, numberOfXs * quantityForOffer)),
             description = "$minimumQuantityToApplyOffer for $amount",
             discountAmount = discountTotal
         )

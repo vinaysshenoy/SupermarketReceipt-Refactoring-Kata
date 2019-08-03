@@ -24,7 +24,12 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
             result.append(line)
         }
         for (discount in receipt.discounts) {
-            val productPresentation = discount.products.first().name
+            val productsInDiscount = discount
+                .products
+                .map { it.product }
+                .toSet()
+
+            val productPresentation = productsInDiscount.first().name
             val pricePresentation = String.format(Locale.UK, "%.2f", discount.discountAmount)
             val description = discount.description
             result.append(description)

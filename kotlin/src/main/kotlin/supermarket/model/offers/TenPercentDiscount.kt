@@ -3,6 +3,7 @@ package supermarket.model.offers
 import supermarket.ProductQuantities
 import supermarket.model.Discount
 import supermarket.model.Product
+import supermarket.model.ProductQuantity
 import supermarket.model.SupermarketCatalog
 
 data class TenPercentDiscount(
@@ -18,7 +19,7 @@ data class TenPercentDiscount(
         val quantity = productQuantities.getValue(product)
         val unitPrice = catalog.getUnitPrice(product)
         return Discount(
-            products = setOf(product),
+            products = setOf(ProductQuantity(product, quantity)),
             description = "$discountPercent% off",
             discountAmount = quantity * unitPrice * discountPercent / 100.0
         )

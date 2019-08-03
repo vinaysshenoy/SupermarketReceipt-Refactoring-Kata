@@ -3,6 +3,7 @@ package supermarket.model.offers
 import supermarket.ProductQuantities
 import supermarket.model.Discount
 import supermarket.model.Product
+import supermarket.model.ProductQuantity
 import supermarket.model.SupermarketCatalog
 
 data class ThreeForTwo(
@@ -21,11 +22,10 @@ data class ThreeForTwo(
 
         val unitPrice = catalog.getUnitPrice(product)
 
-        val numberOfXs = quantityAsInt / minimumQuantityToApplyOffer
-        val discountAmount =
-            quantity * unitPrice - (numberOfXs.toDouble() * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
+        val numberOfXs = (quantityAsInt / minimumQuantityToApplyOffer).toDouble()
+        val discountAmount = quantity * unitPrice - (numberOfXs * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
         return Discount(
-            products = setOf(product),
+            products = setOf(ProductQuantity(product, quantity = numberOfXs * 3.0)),
             description = "3 for 2",
             discountAmount = discountAmount
         )
