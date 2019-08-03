@@ -2,6 +2,7 @@ package supermarket.model
 
 import supermarket.ProductQuantities
 import supermarket.model.offers.Offer
+import supermarket.remove
 
 class ShoppingCart {
     private val items = mutableListOf<ProductQuantity>()
@@ -25,11 +26,20 @@ class ShoppingCart {
             .asSequence()
             .filter { offer -> offer.isOfferApplicable(productQuantities) }
             .fold(mutableListOf<Discount>() to productQuantities) { (discounts, productQuantities), offer ->
-                discounts.add(offer.discount(productQuantities, catalog))
-                discounts to productQuantities
+                val discountToAdd = offer.discount(productQuantities, catalog)
+                discounts.add(discountToAdd)
+                discounts to removeFromProductQuantities(productQuantities, discountToAdd.products)
             }
             .first
             .toList()
+    }
+
+    private fun removeFromProductQuantities(
+        productQuantities: ProductQuantities,
+        productsFromDiscount: Set<ProductQuantity>
+    ): ProductQuantities {
+        return productsFromDiscount
+            .fold(productQuantities) { acc, productQuantity -> acc.remove(productQuantity) }
     }
 
     private fun accumulatedProductQuantities(): ProductQuantities {
