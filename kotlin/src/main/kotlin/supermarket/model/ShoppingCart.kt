@@ -24,11 +24,14 @@ class ShoppingCart {
 
         return offers
             .asSequence()
-            .filter { offer -> offer.isOfferApplicable(productQuantities) }
             .fold(mutableListOf<Discount>() to productQuantities) { (discounts, productQuantities), offer ->
-                val discountToAdd = offer.discount(productQuantities, catalog)
-                discounts.add(discountToAdd)
-                discounts to removeFromProductQuantities(productQuantities, discountToAdd.products)
+                if (offer.isOfferApplicable(productQuantities)) {
+                    val discountToAdd = offer.discount(productQuantities, catalog)
+                    discounts.add(discountToAdd)
+                    discounts to removeFromProductQuantities(productQuantities, discountToAdd.products)
+                } else {
+                    discounts to productQuantities
+                }
             }
             .first
             .toList()

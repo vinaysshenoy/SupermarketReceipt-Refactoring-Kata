@@ -6,18 +6,16 @@ import supermarket.model.Product
 import supermarket.model.ProductQuantity
 import supermarket.model.SupermarketCatalog
 
-class XForAmount(
+data class XForAmount(
     val product: Product,
     val quantityForOffer: Double,
     val amount: Double
 ) : Offer {
 
-    override fun discount(productQuantities: ProductQuantities, catalog: SupermarketCatalog): Discount {
-        val quantity = productQuantities.getValue(product)
+    override fun discount(allProducts: ProductQuantities, catalog: SupermarketCatalog): Discount {
+        val quantity = allProducts.getValue(product)
         val quantityAsInt = quantity.toInt()
         val minimumQuantityToApplyOffer = quantityForOffer.toInt()
-
-        require(quantityAsInt >= minimumQuantityToApplyOffer)
 
         val unitPrice = catalog.getUnitPrice(product)
         val numberOfXs = (quantityAsInt / minimumQuantityToApplyOffer).toDouble()
