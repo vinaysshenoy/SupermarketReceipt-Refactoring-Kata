@@ -11,11 +11,11 @@ data class ThreeForTwo(
 ) : Offer {
 
     override fun discount(
-        productQuantities: ProductQuantities,
+        allProducts: ProductQuantities,
         catalog: SupermarketCatalog
     ): Discount {
         val minimumQuantityToApplyOffer = 3
-        val quantity = productQuantities.getValue(product)
+        val quantity = allProducts.getValue(product)
         val quantityAsInt = quantity.toInt()
 
         require(quantityAsInt >= minimumQuantityToApplyOffer)

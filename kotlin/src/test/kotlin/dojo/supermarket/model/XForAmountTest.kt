@@ -52,7 +52,7 @@ class XForAmountTest {
         val catalog = FakeCatalog()
         catalog.addProduct(product = product, price = priceOfProduct)
 
-        val productQuantities = mapOf(
+        val allProducts = mapOf(
             product to actualQuantityOfProduct
         )
         val offer = XForAmount(
@@ -63,9 +63,9 @@ class XForAmountTest {
 
         // when
         val discount: Discount = offer.discount(
-            productQuantities = productQuantities,
+            allProducts = allProducts,
             catalog = catalog
-        )!!
+        )
 
         // then
         expect {

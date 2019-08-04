@@ -55,24 +55,30 @@ class ReceiptPrinterTest {
             columns: Int,
             expectedReceipt: String
         ): Arguments {
-            return Arguments.of(columns, expectedReceipt)
+            return Arguments.of(columns, expectedReceipt.trimMargin())
         }
 
         return Stream.of(
             testCase(
                 columns = 20,
                 expectedReceipt = """
-Total:          0.00"""
+                    |
+                    |Total:          0.00
+                """
             ),
             testCase(
                 columns = 40,
                 expectedReceipt = """
-Total:                              0.00"""
+                    |
+                    |Total:                              0.00
+                """
             ),
             testCase(
                 columns = 60,
                 expectedReceipt = """
-Total:                                                  0.00"""
+                    |
+                    |Total:                                                  0.00
+                """
             )
         )
     }
@@ -135,75 +141,81 @@ Total:                                                  0.00"""
             columns: Int,
             expectedReceipt: String
         ): Arguments {
-            return Arguments.of(columns, expectedReceipt)
+            return Arguments.of(columns, expectedReceipt.trimMargin())
         }
 
         return Stream.of(
             testCase(
                 columns = 20,
-                expectedReceipt = """product 1      10.00
-  5.00 * 2.000
-product 4     150.00
-  20.00 * 7
-product that has a really, really, really long name30.00
-  10.00 * 3
-product 1      10.00
-  5.00 * 2.000
-product 3      30.00
-  15.00 * 2.000
-product 5      87.50
-  25.00 * 3.500
-product 3      15.00
-3 for 2(product 3)-15.00
-2 for 18.5(product 1)--17.00
-10.0% off(product 5)-8.75
-5 for 95.0(product 4)-15.00
-
-Total:        310.75"""
+                expectedReceipt = """
+                    |product 1      10.00
+                    |  5.00 * 2.000
+                    |product 4     150.00
+                    |  20.00 * 7
+                    |product that has a really, really, really long name30.00
+                    |  10.00 * 3
+                    |product 1      10.00
+                    |  5.00 * 2.000
+                    |product 3      30.00
+                    |  15.00 * 2.000
+                    |product 5      87.50
+                    |  25.00 * 3.500
+                    |product 3      15.00
+                    |3 for 2(product 3)-15.00
+                    |2 for 18.5(product 1)--17.00
+                    |10.0% off(product 5)-8.75
+                    |5 for 95.0(product 4)-15.00
+                    |
+                    |Total:        310.75
+                """
             ),
             testCase(
                 columns = 40,
-                expectedReceipt = """product 1                          10.00
-  5.00 * 2.000
-product 4                         150.00
-  20.00 * 7
-product that has a really, really, really long name30.00
-  10.00 * 3
-product 1                          10.00
-  5.00 * 2.000
-product 3                          30.00
-  15.00 * 2.000
-product 5                          87.50
-  25.00 * 3.500
-product 3                          15.00
-3 for 2(product 3)                -15.00
-2 for 18.5(product 1)            --17.00
-10.0% off(product 5)               -8.75
-5 for 95.0(product 4)             -15.00
-
-Total:                            310.75"""
+                expectedReceipt = """
+                    |product 1                          10.00
+                    |  5.00 * 2.000
+                    |product 4                         150.00
+                    |  20.00 * 7
+                    |product that has a really, really, really long name30.00
+                    |  10.00 * 3
+                    |product 1                          10.00
+                    |  5.00 * 2.000
+                    |product 3                          30.00
+                    |  15.00 * 2.000
+                    |product 5                          87.50
+                    |  25.00 * 3.500
+                    |product 3                          15.00
+                    |3 for 2(product 3)                -15.00
+                    |2 for 18.5(product 1)            --17.00
+                    |10.0% off(product 5)               -8.75
+                    |5 for 95.0(product 4)             -15.00
+                    |
+                    |Total:                            310.75
+                """
             ),
             testCase(
                 columns = 60,
-                expectedReceipt = """product 1                                              10.00
-  5.00 * 2.000
-product 4                                             150.00
-  20.00 * 7
-product that has a really, really, really long name    30.00
-  10.00 * 3
-product 1                                              10.00
-  5.00 * 2.000
-product 3                                              30.00
-  15.00 * 2.000
-product 5                                              87.50
-  25.00 * 3.500
-product 3                                              15.00
-3 for 2(product 3)                                    -15.00
-2 for 18.5(product 1)                                --17.00
-10.0% off(product 5)                                   -8.75
-5 for 95.0(product 4)                                 -15.00
-
-Total:                                                310.75"""
+                expectedReceipt = """
+                    |product 1                                              10.00
+                    |  5.00 * 2.000
+                    |product 4                                             150.00
+                    |  20.00 * 7
+                    |product that has a really, really, really long name    30.00
+                    |  10.00 * 3
+                    |product 1                                              10.00
+                    |  5.00 * 2.000
+                    |product 3                                              30.00
+                    |  15.00 * 2.000
+                    |product 5                                              87.50
+                    |  25.00 * 3.500
+                    |product 3                                              15.00
+                    |3 for 2(product 3)                                    -15.00
+                    |2 for 18.5(product 1)                                --17.00
+                    |10.0% off(product 5)                                   -8.75
+                    |5 for 95.0(product 4)                                 -15.00
+                    |
+                    |Total:                                                310.75
+                """
             )
         )
     }
@@ -251,18 +263,20 @@ Total:                                                310.75"""
         val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart))
 
         // then
-        val expectedReceipt = """product 1                           5.00
-product 4                          90.00
-  20.00 * 4
-product 2                          30.00
-  10.00 * 3
-product 3                          30.00
-  15.00 * 2.000
-product 5                          87.50
-  25.00 * 3.500
-10.0% off(product 5)               -8.75
-
-Total:                            233.75"""
+        val expectedReceipt = """
+            |product 1                           5.00
+            |product 4                          90.00
+            |  20.00 * 4
+            |product 2                          30.00
+            |  10.00 * 3
+            |product 3                          30.00
+            |  15.00 * 2.000
+            |product 5                          87.50
+            |  25.00 * 3.500
+            |10.0% off(product 5)               -8.75
+            |
+            |Total:                            233.75
+        """.trimMargin()
         expectThat(printedReceipt).isEqualTo(expectedReceipt)
     }
 }

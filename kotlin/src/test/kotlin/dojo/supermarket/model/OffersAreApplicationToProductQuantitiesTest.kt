@@ -8,7 +8,9 @@ import strikt.api.*
 import strikt.assertions.*
 import supermarket.ProductQuantities
 import supermarket.model.Product
+import supermarket.model.ProductQuantity
 import supermarket.model.ProductUnit
+import supermarket.model.offers.BundleDiscountOffer
 import supermarket.model.offers.Offer
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
@@ -42,33 +44,70 @@ class OffersAreApplicationToProductQuantitiesTest {
             return Arguments.of(name, offer, productQuantities)
         }
 
-        val product = Product("product", ProductUnit.Kilo)
+        val apples = Product("Apples", ProductUnit.Kilo)
+        val oranges = Product("Oranges", ProductUnit.Kilo)
 
         return Stream.of(
             testCase(
                 name = "10% off",
-                offer = TenPercentDiscount(product),
-                productQuantities = mapOf(product to 1.0)
+                offer = TenPercentDiscount(apples),
+                productQuantities = mapOf(apples to 1.0)
             ),
             testCase(
                 name = "3 for 2 applied to 3 items",
-                offer = ThreeForTwo(product),
-                productQuantities = mapOf(product to 3.0)
+                offer = ThreeForTwo(apples),
+                productQuantities = mapOf(apples to 3.0)
             ),
             testCase(
                 name = "3 for 2 applied to 4 items",
-                offer = ThreeForTwo(product),
-                productQuantities = mapOf(product to 4.0)
+                offer = ThreeForTwo(apples),
+                productQuantities = mapOf(apples to 4.0)
             ),
             testCase(
                 name = "x for amount applied with x = 2 and quantity 2",
-                offer = XForAmount(product, quantityForOffer = 2.0, amount = 5.0),
-                productQuantities = mapOf(product to 2.0)
+                offer = XForAmount(
+                    product = apples,
+                    quantityForOffer = 2.0,
+                    amount = 5.0
+                ),
+                productQuantities = mapOf(apples to 2.0)
             ),
             testCase(
                 name = "x for amount applied with x = 5 and quantity 7",
-                offer = XForAmount(product, quantityForOffer = 5.0, amount = 5.0),
-                productQuantities = mapOf(product to 7.0)
+                offer = XForAmount(
+                    product = apples,
+                    quantityForOffer = 5.0,
+                    amount = 5.0
+                ),
+                productQuantities = mapOf(apples to 7.0)
+            ),
+            testCase(
+                name = "bundle (apples: 1, oranges: 1.5) discount applied with apples = 1 and oranges = 1.5",
+                offer = BundleDiscountOffer(
+                    bundle = setOf(
+                        ProductQuantity(apples, 1.0),
+                        ProductQuantity(oranges, 1.5)
+                    ),
+                    discountPercent = 5.0
+                ),
+                productQuantities = mapOf(
+                    apples to 1.0,
+                    oranges to 1.5
+                )
+            ),
+            testCase(
+                name = "bundle (apples: 1, oranges: 1.5) discount applied with apples = 2 and oranges = 2.5",
+                offer = BundleDiscountOffer(
+                    bundle = setOf(
+                        ProductQuantity(apples, 1.0),
+                        ProductQuantity(oranges, 1.5)
+                    ),
+                    discountPercent = 5.0
+                ),
+                productQuantities = mapOf(
+                    apples to 2.0,
+                    oranges to 2.5
+                )
             )
         )
     }
@@ -97,33 +136,62 @@ class OffersAreApplicationToProductQuantitiesTest {
             return Arguments.of(name, offer, productQuantities)
         }
 
-        val product = Product("product", ProductUnit.Kilo)
+        val apples = Product("Apples", ProductUnit.Kilo)
+        val oranges = Product("Oranges", ProductUnit.Kilo)
 
         return Stream.of(
             testCase(
                 name = "10% off",
-                offer = TenPercentDiscount(product),
+                offer = TenPercentDiscount(apples),
                 productQuantities = emptyMap()
             ),
             testCase(
                 name = "3 for 2 applied to 2 items",
-                offer = ThreeForTwo(product),
-                productQuantities = mapOf(product to 2.0)
+                offer = ThreeForTwo(apples),
+                productQuantities = mapOf(apples to 2.0)
             ),
             testCase(
                 name = "3 for 2 applied to 1 item",
-                offer = ThreeForTwo(product),
-                productQuantities = mapOf(product to 1.0)
+                offer = ThreeForTwo(apples),
+                productQuantities = mapOf(apples to 1.0)
             ),
             testCase(
                 name = "x for amount applied with x = 2 and quantity 1",
-                offer = XForAmount(product, quantityForOffer = 2.0, amount = 5.0),
-                productQuantities = mapOf(product to 1.0)
+                offer = XForAmount(apples, quantityForOffer = 2.0, amount = 5.0),
+                productQuantities = mapOf(apples to 1.0)
             ),
             testCase(
                 name = "x for amount applied with x = 5 and quantity 4",
-                offer = XForAmount(product, quantityForOffer = 5.0, amount = 5.0),
-                productQuantities = mapOf(product to 4.0)
+                offer = XForAmount(apples, quantityForOffer = 5.0, amount = 5.0),
+                productQuantities = mapOf(apples to 4.0)
+            ),
+            testCase(
+                name = "bundle (apples: 1, oranges: 1.5) discount applied with apples = 1 and oranges = 1.49",
+                offer = BundleDiscountOffer(
+                    bundle = setOf(
+                        ProductQuantity(apples, 1.0),
+                        ProductQuantity(oranges, 1.5)
+                    ),
+                    discountPercent = 5.0
+                ),
+                productQuantities = mapOf(
+                    apples to 1.0,
+                    oranges to 1.49
+                )
+            ),
+            testCase(
+                name = "bundle (apples: 1, oranges: 1.5) discount applied with apples = 0.9 and oranges = 1.5",
+                offer = BundleDiscountOffer(
+                    bundle = setOf(
+                        ProductQuantity(apples, 1.0),
+                        ProductQuantity(oranges, 1.5)
+                    ),
+                    discountPercent = 5.0
+                ),
+                productQuantities = mapOf(
+                    apples to 0.9,
+                    oranges to 1.5
+                )
             )
         )
     }

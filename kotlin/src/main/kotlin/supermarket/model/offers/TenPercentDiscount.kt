@@ -13,10 +13,10 @@ data class TenPercentDiscount(
     private val discountPercent = 10.0
 
     override fun discount(
-        productQuantities: ProductQuantities,
+        allProducts: ProductQuantities,
         catalog: SupermarketCatalog
     ): Discount {
-        val quantity = productQuantities.getValue(product)
+        val quantity = allProducts.getValue(product)
         val unitPrice = catalog.getUnitPrice(product)
         return Discount(
             products = setOf(ProductQuantity(product, quantity)),
