@@ -6,8 +6,8 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import strikt.api.expectThat
-import strikt.assertions.isEqualTo
+import strikt.api.*
+import strikt.assertions.*
 import supermarket.ReceiptPrinter
 import supermarket.model.Product
 import supermarket.model.ProductUnit
@@ -18,6 +18,7 @@ import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.XForAmount
 import java.util.stream.Stream
 
+@Suppress("ClassName")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReceiptPrinterTest_Regression {
 
@@ -111,7 +112,7 @@ class ReceiptPrinterTest_Regression {
 
         teller.addOffers(
             ThreeForTwo(product = product3),
-            XForAmount(product = product1, quantityForOffer = 2.0, amount = 18.5),
+            XForAmount(product = product1, quantityForOffer = 2.0, amount = 8.5),
             TenPercentDiscount(product = product5),
             XForAmount(product = product4, quantityForOffer = 5.0, amount = 95.0)
         )
@@ -162,11 +163,11 @@ class ReceiptPrinterTest_Regression {
                     |  25.00 * 3.500
                     |product 3      15.00
                     |3 for 2(product 3)-15.00
-                    |2 for 18.5(product 1)--17.00
+                    |2 for 8.5(product 1)-3.00
                     |10.0% off(product 5)-8.75
                     |5 for 95.0(product 4)-15.00
                     |
-                    |Total:        310.75
+                    |Total:        290.75
                 """
             ),
             testCase(
@@ -186,11 +187,11 @@ class ReceiptPrinterTest_Regression {
                     |  25.00 * 3.500
                     |product 3                          15.00
                     |3 for 2(product 3)                -15.00
-                    |2 for 18.5(product 1)            --17.00
+                    |2 for 8.5(product 1)               -3.00
                     |10.0% off(product 5)               -8.75
                     |5 for 95.0(product 4)             -15.00
                     |
-                    |Total:                            310.75
+                    |Total:                            290.75
                 """
             ),
             testCase(
@@ -210,11 +211,11 @@ class ReceiptPrinterTest_Regression {
                     |  25.00 * 3.500
                     |product 3                                              15.00
                     |3 for 2(product 3)                                    -15.00
-                    |2 for 18.5(product 1)                                --17.00
+                    |2 for 8.5(product 1)                                   -3.00
                     |10.0% off(product 5)                                   -8.75
                     |5 for 95.0(product 4)                                 -15.00
                     |
-                    |Total:                                                310.75
+                    |Total:                                                290.75
                 """
             )
         )
