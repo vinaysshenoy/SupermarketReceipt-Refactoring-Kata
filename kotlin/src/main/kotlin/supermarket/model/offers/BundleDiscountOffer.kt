@@ -33,7 +33,7 @@ data class BundleDiscountOffer(
             .min()!!
 
         val combinedUnitPriceOfBundle: Double = bundle
-            .map { (product, _) -> catalog.getUnitPrice(product) }
+            .map { (product, quantity) -> quantity * catalog.getUnitPrice(product) }
             .sum()
 
         val totalPriceOfBundleProductsBeforeDiscount = occurrencesOfBundle * combinedUnitPriceOfBundle

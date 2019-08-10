@@ -147,6 +147,26 @@ class BundleDiscountOfferTest {
                     ProductQuantity(mouthwash, 1.0)
                 ),
                 expectedDiscount = 1.35
+            ),
+            ParamsForApplyingDiscount(
+                bundle = setOf(
+                    ProductQuantity(apples, 1.5),
+                    ProductQuantity(oranges, 1.0)
+                ),
+                prices = mapOf(
+                    apples to 5.0,
+                    oranges to 3.0
+                ),
+                discountPercent = 8.0,
+                quantitiesOfProduct = setOf(
+                    ProductQuantity(apples, 4.0),
+                    ProductQuantity(oranges, 4.0)
+                ),
+                expectedDiscountProducts = setOf(
+                    ProductQuantity(apples, 3.0),
+                    ProductQuantity(oranges, 2.0)
+                ),
+                expectedDiscount = 1.68
             )
         )
     }
