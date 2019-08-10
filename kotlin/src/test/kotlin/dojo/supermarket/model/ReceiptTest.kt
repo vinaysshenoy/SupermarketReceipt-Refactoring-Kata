@@ -97,22 +97,22 @@ class ReceiptTest {
         val expectedDiscounts = listOf(
             Discount(
                 products = setOf(ProductQuantity(product1, 4.0)),
-                description = "2 for 18.5",
+                description = "2 for 18.5(product 1)",
                 discountAmount = -17.0
             ),
             Discount(
                 products = setOf(ProductQuantity(product4, 5.0)),
-                description = "5 for 95.0",
+                description = "5 for 95.0(product 4)",
                 discountAmount = 15.0
             ),
             Discount(
                 products = setOf(ProductQuantity(product3, 3.0)),
-                description = "3 for 2",
+                description = "3 for 2(product 3)",
                 discountAmount = 15.0
             ),
             Discount(
                 products = setOf(ProductQuantity(product5, 3.5)),
-                description = "10.0% off",
+                description = "10.0% off(product 5)",
                 discountAmount = 8.75
             )
         )
@@ -178,7 +178,7 @@ class ReceiptTest {
         val expectedDiscounts = listOf(
             Discount(
                 products = setOf(ProductQuantity(product5, 3.5)),
-                description = "10.0% off",
+                description = "10.0% off(product 5)",
                 discountAmount = 8.75
             )
         )
@@ -253,17 +253,17 @@ class ReceiptTest {
         val expectedDiscounts = listOf(
             Discount(
                 products = setOf(ProductQuantity(product1, 4.0)),
-                description = "2 for 18.5",
+                description = "2 for 18.5(product 1)",
                 discountAmount = -17.0
             ),
             Discount(
                 products = setOf(ProductQuantity(product3, 3.0)),
-                description = "3 for 2",
+                description = "3 for 2(product 3)",
                 discountAmount = 15.0
             ),
             Discount(
                 products = setOf(ProductQuantity(product5, 0.5)),
-                description = "10.0% off",
+                description = "10.0% off(product 5)",
                 discountAmount = 1.25
             ),
             Discount(
@@ -271,7 +271,7 @@ class ReceiptTest {
                     ProductQuantity(product4, 3.0),
                     ProductQuantity(product5, 3.0)
                 ),
-                description = "5.0% off on bundle",
+                description = "5.00% off(product 4 1 + product 5 1.000)",
                 discountAmount = 6.75
             )
         )

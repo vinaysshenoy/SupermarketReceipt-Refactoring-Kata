@@ -1,8 +1,6 @@
 package supermarket
 
-import supermarket.model.ProductUnit
 import supermarket.model.Receipt
-import supermarket.model.ReceiptItem
 import java.util.*
 
 class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
@@ -11,7 +9,7 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
         val result = StringBuilder()
         for (item in receipt.items) {
             val price = String.format(Locale.UK, "%.2f", item.totalPrice)
-            val quantity = presentQuantity(item)
+            val quantity = formatQuantity(item.product.unit, item.quantity)
             val name = item.product.name
             val unitPrice = String.format(Locale.UK, "%.2f", item.price)
 
@@ -23,37 +21,24 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
             }
             result.append(line)
         }
-        for (discount in receipt.discounts) {
-            val productsInDiscount = discount
-                .products
-                .map { it.product }
-                .toSet()
+        receipt
+            .discounts
+            .forEach { discount ->
+                val pricePresentation = String.format(Locale.UK, "%.2f", discount.discountAmount)
+                val description = discount.description
 
-            val productPresentation = productsInDiscount.first().name
-            val pricePresentation = String.format(Locale.UK, "%.2f", discount.discountAmount)
-            val description = discount.description
-            result.append(description)
-            result.append("(")
-            result.append(productPresentation)
-            result.append(")")
-            result.append(getWhitespace(this.columns - 3 - productPresentation.length - description.length - pricePresentation.length))
-            result.append("-")
-            result.append(pricePresentation)
-            result.append("\n")
-        }
+                result.append(description)
+                result.append(getWhitespace(this.columns - 1 - description.length - pricePresentation.length))
+                result.append("-")
+                result.append(pricePresentation)
+                result.append("\n")
+            }
         result.append("\n")
-        val pricePresentation = String.format(Locale.UK, "%.2f", receipt.totalPrice as Double)
+        val pricePresentation = String.format(Locale.UK, "%.2f", receipt.totalPrice)
         val total = "Total: "
         val whitespace = getWhitespace(this.columns - total.length - pricePresentation.length)
         result.append(total).append(whitespace).append(pricePresentation)
         return result.toString()
-    }
-
-    private fun presentQuantity(item: ReceiptItem): String {
-        return if (ProductUnit.Each.equals(item.product.unit))
-            String.format("%x", item.quantity.toInt())
-        else
-            String.format(Locale.UK, "%.3f", item.quantity)
     }
 
     private fun getWhitespace(whitespaceSize: Int): String {

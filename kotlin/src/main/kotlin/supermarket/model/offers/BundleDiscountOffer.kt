@@ -1,6 +1,7 @@
 package supermarket.model.offers
 
 import supermarket.ProductQuantities
+import supermarket.formatQuantity
 import supermarket.model.Discount
 import supermarket.model.Product
 import supermarket.model.ProductQuantity
@@ -12,7 +13,7 @@ data class BundleDiscountOffer(
 ) : Offer {
 
     init {
-        if (bundle.isEmpty()) throw IllegalArgumentException("Bundle cannot be empty!")
+        if (bundle.size <= 1) throw IllegalArgumentException("Bundle must have at least 2 products!")
     }
 
     override fun discount(allProducts: ProductQuantities, catalog: SupermarketCatalog): Discount {
@@ -43,7 +44,7 @@ data class BundleDiscountOffer(
             .map { productQuantity -> productQuantityIncludedInBundle(productQuantity, occurrencesOfBundle) }
             .toSet()
 
-        return Discount(discountProducts, "%.01f%% off on bundle".format(discountPercent), discountAmount)
+        return Discount(discountProducts, generateDiscountDescription(), discountAmount)
     }
 
     private fun productQuantityIncludedInBundle(
@@ -67,6 +68,19 @@ data class BundleDiscountOffer(
 
     private fun minimumQuantityOfProductInBundle(product: Product): Double {
         return bundle.find { it.product == product }!!.quantity
+    }
+
+    private fun generateDiscountDescription(): String {
+        return "%.02f%% off(%s)".format(discountPercent, generateBundlePresentation())
+    }
+
+    private fun generateBundlePresentation() = bundle.joinToString(" + ", transform = this::presentProductQuantity)
+
+    private fun presentProductQuantity(productQuantity: ProductQuantity): String {
+        val product = productQuantity.product
+        val quantity = productQuantity.quantity
+
+        return "${product.name} ${formatQuantity(product.unit, quantity)}"
     }
 
     override fun applicableProducts(): Set<Product> {
