@@ -65,7 +65,7 @@ class ReceiptPrinterTest {
 
         // when
         val receiptPrinter = ReceiptPrinter()
-        val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart))
+        val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart), columns = 40)
 
         // then
         val expectedReceipt = """

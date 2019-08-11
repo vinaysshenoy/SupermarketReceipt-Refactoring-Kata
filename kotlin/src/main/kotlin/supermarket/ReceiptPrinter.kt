@@ -12,43 +12,42 @@ import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.XForAmount
 import java.util.*
 
-class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
+class ReceiptPrinter {
 
-    fun printReceipt(receipt: Receipt): String {
-
+    fun printReceipt(receipt: Receipt, columns: Int): String {
         return listOf(
-            generateReceiptItemSection(receipt),
-            generateDiscountItemSection(receipt),
-            generateReceiptSummarySection(receipt)
+            generateReceiptItemSection(receipt, columns),
+            generateDiscountItemSection(receipt, columns),
+            generateReceiptSummarySection(receipt, columns)
         )
             .filter(String::isNotBlank)
             .joinToString("\n")
     }
 
-    private fun generateReceiptItemSection(receipt: Receipt): String {
+    private fun generateReceiptItemSection(receipt: Receipt, columns: Int): String {
         return receipt
             .items
-            .flatMap(this::generateReceiptItemSectionLines)
+            .flatMap { item -> this.generateReceiptItemSectionLines(item, columns) }
             .joinToString(separator = "\n")
     }
 
-    private fun generateDiscountItemSection(receipt: Receipt): String {
+    private fun generateDiscountItemSection(receipt: Receipt, columns: Int): String {
         return receipt
             .discountOffers
-            .joinToString(separator = "\n", transform = this::generateDiscountItemLine)
+            .joinToString(separator = "\n") { discountOffer -> generateDiscountItemLine(discountOffer, columns) }
     }
 
-    private fun generateReceiptItemSectionLines(item: ReceiptItem): List<String> {
+    private fun generateReceiptItemSectionLines(item: ReceiptItem, columns: Int): List<String> {
         return listOfNotNull(
-            receiptItemPrimaryLine(item),
+            receiptItemPrimaryLine(item, columns),
             receiptItemSecondaryLine(item)
         )
     }
 
-    private fun receiptItemPrimaryLine(item: ReceiptItem): String {
+    private fun receiptItemPrimaryLine(item: ReceiptItem, columns: Int): String {
         val price = String.format(Locale.UK, "%.2f", item.totalPrice)
         val name = item.product.name
-        val whitespaceSize = this.columns - name.length - price.length
+        val whitespaceSize = columns - name.length - price.length
         return "$name${getWhitespace(whitespaceSize)}$price"
     }
 
@@ -62,17 +61,17 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
             }
     }
 
-    private fun generateDiscountItemLine(discountOffer: DiscountOffer): String {
+    private fun generateDiscountItemLine(discountOffer: DiscountOffer, columns: Int): String {
         val pricePresentation = String.format(Locale.UK, "-%.2f", discountOffer.discount.discountAmount)
         val description = offerDescription(discountOffer.offer)
-        val whitespace = getWhitespace(this.columns - description.length - pricePresentation.length)
+        val whitespace = getWhitespace(columns - description.length - pricePresentation.length)
         return "$description$whitespace$pricePresentation"
     }
 
-    private fun generateReceiptSummarySection(receipt: Receipt): String {
+    private fun generateReceiptSummarySection(receipt: Receipt, columns: Int): String {
         val pricePresentation = String.format(Locale.UK, "%.2f", receipt.totalPrice)
         val total = "Total: "
-        val whitespace = getWhitespace(this.columns - total.length - pricePresentation.length)
+        val whitespace = getWhitespace(columns - total.length - pricePresentation.length)
         return "\nTotal: $whitespace$pricePresentation"
     }
 
