@@ -105,7 +105,6 @@ class ReceiptTest {
                 offer = xForAmountOfferOnProduct1,
                 discount = Discount(
                     products = setOf(ProductQuantity(product1, 4.0)),
-                    description = "2 for 18.5(product 1)",
                     discountAmount = -17.0
                 )
             ),
@@ -113,7 +112,6 @@ class ReceiptTest {
                 offer = xForAmountOfferOnProduct4,
                 discount = Discount(
                     products = setOf(ProductQuantity(product4, 5.0)),
-                    description = "5 for 95.0(product 4)",
                     discountAmount = 15.0
                 )
             ),
@@ -121,7 +119,6 @@ class ReceiptTest {
                 offer = threeForTwoOfferOnProduct3,
                 discount = Discount(
                     products = setOf(ProductQuantity(product3, 3.0)),
-                    description = "3 for 2(product 3)",
                     discountAmount = 15.0
                 )
             ),
@@ -129,7 +126,6 @@ class ReceiptTest {
                 offer = tenPercentDiscountOfferOnProduct5,
                 discount = Discount(
                     products = setOf(ProductQuantity(product5, 3.5)),
-                    description = "10.0% off(product 5)",
                     discountAmount = 8.75
                 )
             )
@@ -199,7 +195,6 @@ class ReceiptTest {
                 offer = tenPercentDiscountOnProduct5,
                 discount = Discount(
                     products = setOf(ProductQuantity(product5, 3.5)),
-                    description = "10.0% off(product 5)",
                     discountAmount = 8.75
                 )
             )
@@ -283,7 +278,6 @@ class ReceiptTest {
                 offer = xForAmountOfferOnProduct1,
                 discount = Discount(
                     products = setOf(ProductQuantity(product1, 4.0)),
-                    description = "2 for 18.5(product 1)",
                     discountAmount = -17.0
                 )
             ),
@@ -291,7 +285,6 @@ class ReceiptTest {
                 offer = threeForTwoOfferOnProduct3,
                 discount = Discount(
                     products = setOf(ProductQuantity(product3, 3.0)),
-                    description = "3 for 2(product 3)",
                     discountAmount = 15.0
                 )
             ),
@@ -299,7 +292,6 @@ class ReceiptTest {
                 offer = tenPercentDiscountOfferOnProduct5,
                 discount = Discount(
                     products = setOf(ProductQuantity(product5, 0.5)),
-                    description = "10.0% off(product 5)",
                     discountAmount = 1.25
                 )
             ),
@@ -310,7 +302,6 @@ class ReceiptTest {
                         ProductQuantity(product4, 3.0),
                         ProductQuantity(product5, 3.0)
                     ),
-                    description = "5.00% off(product 4 1 + product 5 1.000)",
                     discountAmount = 6.75
                 )
             )
