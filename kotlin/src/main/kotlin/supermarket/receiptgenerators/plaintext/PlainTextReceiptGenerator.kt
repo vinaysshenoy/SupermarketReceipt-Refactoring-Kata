@@ -1,4 +1,4 @@
-package supermarket.receiptgenerators
+package supermarket.receiptgenerators.plaintext
 
 import supermarket.model.DiscountOffer
 import supermarket.model.ProductQuantity
@@ -10,9 +10,10 @@ import supermarket.model.offers.Offer
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.XForAmount
+import supermarket.receiptgenerators.ReceiptGenerator
 import java.util.*
 
-class PlainTextReceiptGenerator {
+class PlainTextReceiptGenerator : ReceiptGenerator {
 
     private data class Options(
         val defaultColumnWidth: Int,
@@ -24,15 +25,22 @@ class PlainTextReceiptGenerator {
 
             fun from(optionsMap: Map<String, Any>): Options {
                 return Options(
-                    defaultColumnWidth = optionsMap.getOrDefault("columns", DEFAULT_COLUMN_WIDTH) as Int,
-                    newLineSeparator = optionsMap.getOrDefault("newline_separator", DEFAULT_NEWLINE_SEPARATOR) as String
+                    defaultColumnWidth = optionsMap.getOrDefault(
+                        "columns",
+                        DEFAULT_COLUMN_WIDTH
+                    ) as Int,
+                    newLineSeparator = optionsMap.getOrDefault(
+                        "newline_separator",
+                        DEFAULT_NEWLINE_SEPARATOR
+                    ) as String
                 )
             }
         }
     }
 
-    fun generate(receipt: Receipt, optionsMap: Map<String, Any>): String {
+    override fun generate(receipt: Receipt, optionsMap: Map<String, Any>): String {
         val options = Options.from(optionsMap)
+
         return listOf(
             generateReceiptItemSection(receipt, options),
             generateDiscountItemSection(receipt, options),
