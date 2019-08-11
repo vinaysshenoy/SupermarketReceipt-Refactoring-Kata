@@ -16,10 +16,17 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
 
     fun printReceipt(receipt: Receipt): String {
         val result = StringBuilder()
-        receipt
+
+        val receiptItemsSection = receipt
             .items
-            .map(this::generateReceiptItemSection)
-            .forEach { result.append(it) }
+            .flatMap(this::generateReceiptItemSectionLines)
+            .joinToString(separator = "\n")
+
+        result.append(receiptItemsSection)
+
+        if (receiptItemsSection.isNotBlank()) {
+            result.append("\n")
+        }
 
         receipt
             .discountOffers
@@ -33,13 +40,11 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
         return result.toString()
     }
 
-    private fun generateReceiptItemSection(item: ReceiptItem): String {
-        val primaryLine = receiptItemPrimaryLine(item)
-
-        return when (val secondaryLine = receiptItemSecondaryLine(item)) {
-            null -> "$primaryLine\n"
-            else -> "$primaryLine\n$secondaryLine\n"
-        }
+    private fun generateReceiptItemSectionLines(item: ReceiptItem): List<String> {
+        return listOfNotNull(
+            receiptItemPrimaryLine(item),
+            receiptItemSecondaryLine(item)
+        )
     }
 
     private fun receiptItemPrimaryLine(item: ReceiptItem): String {
