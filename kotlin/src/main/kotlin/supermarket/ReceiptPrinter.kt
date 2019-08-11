@@ -1,7 +1,7 @@
 package supermarket
 
 import supermarket.model.Receipt
-import supermarket.receiptgenerators.PlainTextReceiptGenerator
+import supermarket.receiptgenerators.plaintext.PlainTextReceiptGenerator
 
 class ReceiptPrinter {
 
