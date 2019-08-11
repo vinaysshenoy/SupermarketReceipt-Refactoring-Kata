@@ -7,18 +7,26 @@ import supermarket.ReceiptPrinter
 import supermarket.model.Product
 import supermarket.model.ProductQuantity
 import supermarket.model.ProductUnit
+import supermarket.model.Receipt
 import supermarket.model.ShoppingCart
 import supermarket.model.Teller
 import supermarket.model.offers.BundleDiscountOffer
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.XForAmount
+import supermarket.receiptgenerators.ReceiptGenerator
+import supermarket.receiptgenerators.plaintext.PlainTextReceiptGenerator
 
 class ReceiptPrinterTest {
+
+    private val receiptPrinter = ReceiptPrinter()
 
     @Test
     fun `receipt for cart with bundle discount`() {
         // given
+        val format = "TXT"
+        receiptPrinter.register(format, PlainTextReceiptGenerator())
+
         val catalog = FakeCatalog()
         val cart = ShoppingCart()
         val teller = Teller(catalog)
@@ -64,8 +72,7 @@ class ReceiptPrinterTest {
         }
 
         // when
-        val receiptPrinter = ReceiptPrinter()
-        val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart), mapOf("columns" to 40))
+        val printedReceipt = receiptPrinter.printReceipt(format, teller.checksOutArticlesFrom(cart))
 
         // then
         val expectedReceipt = """
@@ -92,5 +99,52 @@ class ReceiptPrinterTest {
                     |Total:                            287.00
                 """.trimMargin()
         expectThat(printedReceipt).isEqualTo(expectedReceipt)
+    }
+
+    @Test
+    fun `trying to generate a receipt with an unknown format must throw an error`() {
+        // given
+        val receipt = Receipt(
+            items = emptyList(),
+            discountOffers = emptyList()
+        )
+        val format = "UNKNOWN_FORMAT"
+
+        // when
+        val expectAction = expectCatching { receiptPrinter.printReceipt(format, receipt) }
+
+        // then
+        expectAction
+            .failed()
+            .isEqualTo(ReceiptPrinter.UnknownFormatException(format))
+    }
+
+    @Test
+    fun `the registered receipt generator must be used for the specific format`() {
+        class MockReceiptGenerator(private val generated: String) : ReceiptGenerator {
+            override fun generate(receipt: Receipt, optionsMap: Map<String, Any>): String {
+                return generated
+            }
+        }
+
+        // given
+        val receipt = Receipt(
+            items = emptyList(),
+            discountOffers = emptyList()
+        )
+        val format1 = "FORMAT_1"
+        val format2 = "FORMAT_2"
+        receiptPrinter.register(format2, MockReceiptGenerator("Receipt 2"))
+        receiptPrinter.register(format1, MockReceiptGenerator("Receipt 1"))
+
+        // when
+        val printedReceiptForFormat1 = receiptPrinter.printReceipt(format1, receipt)
+        val printedReceiptForFormat2 = receiptPrinter.printReceipt(format2, receipt)
+
+        // then
+        expect {
+            that(printedReceiptForFormat1).isEqualTo("Receipt 1")
+            that(printedReceiptForFormat2).isEqualTo("Receipt 2")
+        }
     }
 }
