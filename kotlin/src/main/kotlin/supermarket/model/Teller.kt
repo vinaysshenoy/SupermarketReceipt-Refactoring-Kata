@@ -25,6 +25,6 @@ class Teller(private val catalog: SupermarketCatalog) {
 
         val discounts = theCart.applyDiscounts(offers, catalog)
 
-        return Receipt(items = receiptItems, discounts = discounts)
+        return Receipt(items = receiptItems, discountOffers = discounts)
     }
 }

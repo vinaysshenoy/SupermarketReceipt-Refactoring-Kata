@@ -22,7 +22,8 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
             result.append(line)
         }
         receipt
-            .discounts
+            .discountOffers
+            .map { it.discount }
             .forEach { discount ->
                 val pricePresentation = String.format(Locale.UK, "%.2f", discount.discountAmount)
                 val description = discount.description
