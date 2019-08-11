@@ -10,7 +10,7 @@ data class TenPercentDiscount(
     val product: Product
 ) : Offer {
 
-    private val discountPercent = 10.0
+    val discountPercent = 10.0
 
     override fun discount(
         allProducts: ProductQuantities,
