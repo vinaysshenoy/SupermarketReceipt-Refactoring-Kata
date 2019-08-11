@@ -23,10 +23,9 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
         }
         receipt
             .discountOffers
-            .map { it.discount }
-            .forEach { discount ->
-                val pricePresentation = String.format(Locale.UK, "%.2f", discount.discountAmount)
-                val description = discount.description
+            .forEach { discountOffer ->
+                val pricePresentation = String.format(Locale.UK, "%.2f", discountOffer.discount.discountAmount)
+                val description = discountOffer.description()
 
                 result.append(description)
                 result.append(getWhitespace(this.columns - 1 - description.length - pricePresentation.length))
