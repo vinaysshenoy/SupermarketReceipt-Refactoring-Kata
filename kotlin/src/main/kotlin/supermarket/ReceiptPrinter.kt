@@ -1,6 +1,7 @@
 package supermarket
 
 import supermarket.model.ProductQuantity
+import supermarket.model.ProductUnit
 import supermarket.model.Receipt
 import supermarket.model.offers.BundleDiscountOffer
 import supermarket.model.offers.Offer
@@ -90,5 +91,12 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
         val quantity = productQuantity.quantity
 
         return "${product.name} ${formatQuantity(product.unit, quantity)}"
+    }
+
+    private fun formatQuantity(unit: ProductUnit, quantity: Double): String {
+        return when (unit) {
+            ProductUnit.Each -> String.format(Locale.UK, "%x", quantity.toInt())
+            ProductUnit.Kilo -> String.format(Locale.UK, "%.3f", quantity)
+        }
     }
 }
