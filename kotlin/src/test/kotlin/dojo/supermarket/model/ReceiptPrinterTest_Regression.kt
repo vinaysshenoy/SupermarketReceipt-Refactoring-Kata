@@ -44,7 +44,10 @@ class ReceiptPrinterTest_Regression {
 
         // when
         val receiptPrinter = ReceiptPrinter()
-        val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart), columns)
+        val printedReceipt = receiptPrinter.printReceipt(
+            teller.checksOutArticlesFrom(cart),
+            mapOf("columns" to columns)
+        )
 
         // then
         expectThat(printedReceipt).isEqualTo(expectedReceipt)
@@ -130,7 +133,10 @@ class ReceiptPrinterTest_Regression {
 
         // when
         val receiptPrinter = ReceiptPrinter()
-        val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart), columns)
+        val printedReceipt = receiptPrinter.printReceipt(
+            teller.checksOutArticlesFrom(cart),
+            mapOf("columns" to columns)
+        )
 
         // then
         expectThat(printedReceipt).isEqualTo(expectedReceipt)
@@ -261,7 +267,7 @@ class ReceiptPrinterTest_Regression {
 
         // when
         val receiptPrinter = ReceiptPrinter()
-        val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart), columns = 40)
+        val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart), mapOf("columns" to 40))
 
         // then
         val expectedReceipt = """
