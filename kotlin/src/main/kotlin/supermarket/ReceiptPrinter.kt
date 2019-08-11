@@ -33,11 +33,30 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
         return result.toString()
     }
 
-    private fun generateReceiptSummarySection(receipt: Receipt): String {
-        val pricePresentation = String.format(Locale.UK, "%.2f", receipt.totalPrice)
-        val total = "Total: "
-        val whitespace = getWhitespace(this.columns - total.length - pricePresentation.length)
-        return "Total: $whitespace$pricePresentation"
+    private fun generateReceiptItemSection(item: ReceiptItem): String {
+        val primaryLine = receiptItemPrimaryLine(item)
+
+        return when (val secondaryLine = receiptItemSecondaryLine(item)) {
+            null -> "$primaryLine\n"
+            else -> "$primaryLine\n$secondaryLine\n"
+        }
+    }
+
+    private fun receiptItemPrimaryLine(item: ReceiptItem): String {
+        val price = String.format(Locale.UK, "%.2f", item.totalPrice)
+        val name = item.product.name
+        val whitespaceSize = this.columns - name.length - price.length
+        return "$name${getWhitespace(whitespaceSize)}$price"
+    }
+
+    private fun receiptItemSecondaryLine(item: ReceiptItem): String? {
+        return item
+            .takeIf { it.quantity > 1.0 }
+            ?.let { receiptItem ->
+                val unitPrice = String.format(Locale.UK, "%.2f", receiptItem.price)
+                val quantity = formatQuantity(receiptItem.product.unit, receiptItem.quantity)
+                "  $unitPrice * $quantity"
+            }
     }
 
     private fun generateDiscountItemSection(discountOffer: DiscountOffer): String {
@@ -47,19 +66,11 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
         return "$description$whitespace$pricePresentation\n"
     }
 
-    private fun generateReceiptItemSection(item: ReceiptItem): String {
-        val price = String.format(Locale.UK, "%.2f", item.totalPrice)
-        val quantity = formatQuantity(item.product.unit, item.quantity)
-        val name = item.product.name
-        val unitPrice = String.format(Locale.UK, "%.2f", item.price)
-
-        val whitespaceSize = this.columns - name.length - price.length
-        var line = name + getWhitespace(whitespaceSize) + price + "\n"
-
-        if (item.quantity != 1.0) {
-            line += "  $unitPrice * $quantity\n"
-        }
-        return line
+    private fun generateReceiptSummarySection(receipt: Receipt): String {
+        val pricePresentation = String.format(Locale.UK, "%.2f", receipt.totalPrice)
+        val total = "Total: "
+        val whitespace = getWhitespace(this.columns - total.length - pricePresentation.length)
+        return "Total: $whitespace$pricePresentation"
     }
 
     private fun getWhitespace(whitespaceSize: Int): String {
