@@ -27,11 +27,17 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
             .forEach { result.append(it) }
 
         result.append("\n")
+
+        val totalPriceSection = generateReceiptSummarySection(receipt)
+        result.append(totalPriceSection)
+        return result.toString()
+    }
+
+    private fun generateReceiptSummarySection(receipt: Receipt): String {
         val pricePresentation = String.format(Locale.UK, "%.2f", receipt.totalPrice)
         val total = "Total: "
         val whitespace = getWhitespace(this.columns - total.length - pricePresentation.length)
-        result.append(total).append(whitespace).append(pricePresentation)
-        return result.toString()
+        return "Total: $whitespace$pricePresentation"
     }
 
     private fun generateDiscountItemSection(discountOffer: DiscountOffer): String {
