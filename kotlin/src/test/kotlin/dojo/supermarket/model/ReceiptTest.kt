@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 import strikt.api.*
 import strikt.assertions.*
 import supermarket.model.Discount
+import supermarket.model.DiscountOffer
 import supermarket.model.Product
 import supermarket.model.ProductQuantity
 import supermarket.model.ProductUnit
@@ -38,7 +39,7 @@ class ReceiptTest {
         // then
         expect {
             that(receipt.items).isEmpty()
-            that(receipt.discounts).isEmpty()
+            that(receipt.discountOffers).isEmpty()
         }
     }
 
@@ -63,11 +64,16 @@ class ReceiptTest {
             addProduct(product = product5, price = 25.0)
         }
 
+        val threeForTwoOfferOnProduct3 = ThreeForTwo(product = product3)
+        val xForAmountOfferOnProduct1 = XForAmount(product = product1, quantityForOffer = 2.0, amount = 18.5)
+        val tenPercentDiscountOfferOnProduct5 = TenPercentDiscount(product = product5)
+        val xForAmountOfferOnProduct4 = XForAmount(product = product4, quantityForOffer = 5.0, amount = 95.0)
+
         teller.addOffers(
-            ThreeForTwo(product = product3),
-            XForAmount(product = product1, quantityForOffer = 2.0, amount = 18.5),
-            TenPercentDiscount(product = product5),
-            XForAmount(product = product4, quantityForOffer = 5.0, amount = 95.0)
+            threeForTwoOfferOnProduct3,
+            xForAmountOfferOnProduct1,
+            tenPercentDiscountOfferOnProduct5,
+            xForAmountOfferOnProduct4
         )
 
         // when
@@ -95,32 +101,44 @@ class ReceiptTest {
             ReceiptItem(product = product3, quantity = 1.0, price = 15.0, totalPrice = 15.0)
         )
         val expectedDiscounts = listOf(
-            Discount(
-                products = setOf(ProductQuantity(product1, 4.0)),
-                description = "2 for 18.5(product 1)",
-                discountAmount = -17.0
+            DiscountOffer(
+                offer = xForAmountOfferOnProduct1,
+                discount = Discount(
+                    products = setOf(ProductQuantity(product1, 4.0)),
+                    description = "2 for 18.5(product 1)",
+                    discountAmount = -17.0
+                )
             ),
-            Discount(
-                products = setOf(ProductQuantity(product4, 5.0)),
-                description = "5 for 95.0(product 4)",
-                discountAmount = 15.0
+            DiscountOffer(
+                offer = xForAmountOfferOnProduct4,
+                discount = Discount(
+                    products = setOf(ProductQuantity(product4, 5.0)),
+                    description = "5 for 95.0(product 4)",
+                    discountAmount = 15.0
+                )
             ),
-            Discount(
-                products = setOf(ProductQuantity(product3, 3.0)),
-                description = "3 for 2(product 3)",
-                discountAmount = 15.0
+            DiscountOffer(
+                offer = threeForTwoOfferOnProduct3,
+                discount = Discount(
+                    products = setOf(ProductQuantity(product3, 3.0)),
+                    description = "3 for 2(product 3)",
+                    discountAmount = 15.0
+                )
             ),
-            Discount(
-                products = setOf(ProductQuantity(product5, 3.5)),
-                description = "10.0% off(product 5)",
-                discountAmount = 8.75
+            DiscountOffer(
+                offer = tenPercentDiscountOfferOnProduct5,
+                discount = Discount(
+                    products = setOf(ProductQuantity(product5, 3.5)),
+                    description = "10.0% off(product 5)",
+                    discountAmount = 8.75
+                )
             )
         )
 
         expect {
             that(receipt.items)
                 .containsExactlyInAnyOrder(expectedReceiptItems)
-            that(receipt.discounts)
+            that(receipt.discountOffers)
                 .containsExactlyInAnyOrder(expectedDiscounts)
         }
     }
@@ -146,10 +164,11 @@ class ReceiptTest {
             addProduct(product = product5, price = 25.0)
         }
 
+        val tenPercentDiscountOnProduct5 = TenPercentDiscount(product5)
         teller.addOffers(
             ThreeForTwo(product3),
             XForAmount(product1, 2.0, 18.5),
-            TenPercentDiscount(product5),
+            tenPercentDiscountOnProduct5,
             XForAmount(product4, 5.0, 95.0)
         )
 
@@ -176,17 +195,20 @@ class ReceiptTest {
         )
 
         val expectedDiscounts = listOf(
-            Discount(
-                products = setOf(ProductQuantity(product5, 3.5)),
-                description = "10.0% off(product 5)",
-                discountAmount = 8.75
+            DiscountOffer(
+                offer = tenPercentDiscountOnProduct5,
+                discount = Discount(
+                    products = setOf(ProductQuantity(product5, 3.5)),
+                    description = "10.0% off(product 5)",
+                    discountAmount = 8.75
+                )
             )
         )
 
         expect {
             that(receipt.items)
                 .containsExactlyInAnyOrder(expectedProductItems)
-            that(receipt.discounts)
+            that(receipt.discountOffers)
                 .containsExactlyInAnyOrder(expectedDiscounts)
         }
     }
@@ -212,18 +234,24 @@ class ReceiptTest {
             addProduct(product = product5, price = 25.0)
         }
 
-        teller.addOffers(
-            BundleDiscountOffer(
-                bundle = setOf(
-                    ProductQuantity(product4, quantity = 1.0),
-                    ProductQuantity(product5, quantity = 1.0)
-                ),
-                discountPercent = 5.0
+        val bundleOfferOnProduct4And5 = BundleDiscountOffer(
+            bundle = setOf(
+                ProductQuantity(product4, quantity = 1.0),
+                ProductQuantity(product5, quantity = 1.0)
             ),
-            ThreeForTwo(product = product3),
-            XForAmount(product = product1, quantityForOffer = 2.0, amount = 18.5),
-            TenPercentDiscount(product = product5),
-            XForAmount(product = product4, quantityForOffer = 5.0, amount = 95.0)
+            discountPercent = 5.0
+        )
+        val threeForTwoOfferOnProduct3 = ThreeForTwo(product = product3)
+        val xForAmountOfferOnProduct1 = XForAmount(product = product1, quantityForOffer = 2.0, amount = 18.5)
+        val tenPercentDiscountOfferOnProduct5 = TenPercentDiscount(product = product5)
+        val xForAmountOfferOnProduct4 = XForAmount(product = product4, quantityForOffer = 5.0, amount = 95.0)
+
+        teller.addOffers(
+            bundleOfferOnProduct4And5,
+            threeForTwoOfferOnProduct3,
+            xForAmountOfferOnProduct1,
+            tenPercentDiscountOfferOnProduct5,
+            xForAmountOfferOnProduct4
         )
 
         // when
@@ -251,35 +279,47 @@ class ReceiptTest {
             ReceiptItem(product = product3, quantity = 1.0, price = 15.0, totalPrice = 15.0)
         )
         val expectedDiscounts = listOf(
-            Discount(
-                products = setOf(ProductQuantity(product1, 4.0)),
-                description = "2 for 18.5(product 1)",
-                discountAmount = -17.0
+            DiscountOffer(
+                offer = xForAmountOfferOnProduct1,
+                discount = Discount(
+                    products = setOf(ProductQuantity(product1, 4.0)),
+                    description = "2 for 18.5(product 1)",
+                    discountAmount = -17.0
+                )
             ),
-            Discount(
-                products = setOf(ProductQuantity(product3, 3.0)),
-                description = "3 for 2(product 3)",
-                discountAmount = 15.0
+            DiscountOffer(
+                offer = threeForTwoOfferOnProduct3,
+                discount = Discount(
+                    products = setOf(ProductQuantity(product3, 3.0)),
+                    description = "3 for 2(product 3)",
+                    discountAmount = 15.0
+                )
             ),
-            Discount(
-                products = setOf(ProductQuantity(product5, 0.5)),
-                description = "10.0% off(product 5)",
-                discountAmount = 1.25
+            DiscountOffer(
+                offer = tenPercentDiscountOfferOnProduct5,
+                discount = Discount(
+                    products = setOf(ProductQuantity(product5, 0.5)),
+                    description = "10.0% off(product 5)",
+                    discountAmount = 1.25
+                )
             ),
-            Discount(
-                products = setOf(
-                    ProductQuantity(product4, 3.0),
-                    ProductQuantity(product5, 3.0)
-                ),
-                description = "5.00% off(product 4 1 + product 5 1.000)",
-                discountAmount = 6.75
+            DiscountOffer(
+                offer = bundleOfferOnProduct4And5,
+                discount = Discount(
+                    products = setOf(
+                        ProductQuantity(product4, 3.0),
+                        ProductQuantity(product5, 3.0)
+                    ),
+                    description = "5.00% off(product 4 1 + product 5 1.000)",
+                    discountAmount = 6.75
+                )
             )
         )
 
         expect {
             that(receipt.items)
                 .containsExactlyInAnyOrder(expectedReceiptItems)
-            that(receipt.discounts)
+            that(receipt.discountOffers)
                 .containsExactlyInAnyOrder(expectedDiscounts)
         }
     }
