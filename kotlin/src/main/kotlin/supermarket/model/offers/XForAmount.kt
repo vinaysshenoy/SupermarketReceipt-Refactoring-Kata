@@ -23,7 +23,6 @@ data class XForAmount(
             unitPrice * quantity - (amount * numberOfXs + quantityAsInt % minimumQuantityToApplyOffer * unitPrice)
         return Discount(
             products = setOf(ProductQuantity(product, numberOfXs * quantityForOffer)),
-            description = "$minimumQuantityToApplyOffer for $amount(${product.name})",
             discountAmount = discountTotal
         )
     }

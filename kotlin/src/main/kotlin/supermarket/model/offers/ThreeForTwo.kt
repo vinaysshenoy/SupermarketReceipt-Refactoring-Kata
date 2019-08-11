@@ -26,7 +26,6 @@ data class ThreeForTwo(
         val discountAmount = quantity * unitPrice - (numberOfXs * 2.0 * unitPrice + quantityAsInt % 3 * unitPrice)
         return Discount(
             products = setOf(ProductQuantity(product, quantity = numberOfXs * 3.0)),
-            description = "3 for 2(${product.name})",
             discountAmount = discountAmount
         )
     }

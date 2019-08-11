@@ -44,7 +44,7 @@ data class BundleDiscountOffer(
             .map { productQuantity -> productQuantityIncludedInBundle(productQuantity, occurrencesOfBundle) }
             .toSet()
 
-        return Discount(discountProducts, generateDiscountDescription(), discountAmount)
+        return Discount(discountProducts, discountAmount)
     }
 
     private fun productQuantityIncludedInBundle(
@@ -68,19 +68,6 @@ data class BundleDiscountOffer(
 
     private fun minimumQuantityOfProductInBundle(product: Product): Double {
         return bundle.find { it.product == product }!!.quantity
-    }
-
-    private fun generateDiscountDescription(): String {
-        return "%.02f%% off(%s)".format(discountPercent, generateBundlePresentation())
-    }
-
-    private fun generateBundlePresentation() = bundle.joinToString(" + ", transform = this::presentProductQuantity)
-
-    private fun presentProductQuantity(productQuantity: ProductQuantity): String {
-        val product = productQuantity.product
-        val quantity = productQuantity.quantity
-
-        return "${product.name} ${formatQuantity(product.unit, quantity)}"
     }
 
     override fun applicableProducts(): Set<Product> {

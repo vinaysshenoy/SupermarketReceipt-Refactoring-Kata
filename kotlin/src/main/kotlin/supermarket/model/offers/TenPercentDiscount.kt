@@ -20,7 +20,6 @@ data class TenPercentDiscount(
         val unitPrice = catalog.getUnitPrice(product)
         return Discount(
             products = setOf(ProductQuantity(product, quantity)),
-            description = "$discountPercent% off(${product.name})",
             discountAmount = quantity * unitPrice * discountPercent / 100.0
         )
     }
