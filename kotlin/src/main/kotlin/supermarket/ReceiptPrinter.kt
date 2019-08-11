@@ -1,5 +1,6 @@
 package supermarket
 
+import supermarket.model.DiscountOffer
 import supermarket.model.ProductQuantity
 import supermarket.model.ProductUnit
 import supermarket.model.Receipt
@@ -18,27 +19,26 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
         receipt
             .items
             .map(this::generateReceiptItemSection)
-            .forEach { line ->
-                result.append(line)
-            }
+            .forEach { result.append(it) }
+
         receipt
             .discountOffers
-            .forEach { discountOffer ->
-                val pricePresentation = String.format(Locale.UK, "%.2f", discountOffer.discount.discountAmount)
-                val description = offerDescription(discountOffer.offer)
+            .map(this::generateDiscountItemSection)
+            .forEach { result.append(it) }
 
-                result.append(description)
-                result.append(getWhitespace(this.columns - 1 - description.length - pricePresentation.length))
-                result.append("-")
-                result.append(pricePresentation)
-                result.append("\n")
-            }
         result.append("\n")
         val pricePresentation = String.format(Locale.UK, "%.2f", receipt.totalPrice)
         val total = "Total: "
         val whitespace = getWhitespace(this.columns - total.length - pricePresentation.length)
         result.append(total).append(whitespace).append(pricePresentation)
         return result.toString()
+    }
+
+    private fun generateDiscountItemSection(discountOffer: DiscountOffer): String {
+        val pricePresentation = String.format(Locale.UK, "-%.2f", discountOffer.discount.discountAmount)
+        val description = offerDescription(discountOffer.offer)
+        val whitespace = getWhitespace(this.columns - description.length - pricePresentation.length)
+        return "$description$whitespace$pricePresentation\n"
     }
 
     private fun generateReceiptItemSection(item: ReceiptItem): String {
