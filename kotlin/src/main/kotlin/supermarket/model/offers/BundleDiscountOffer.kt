@@ -1,7 +1,6 @@
 package supermarket.model.offers
 
 import supermarket.ProductQuantities
-import supermarket.formatQuantity
 import supermarket.model.Discount
 import supermarket.model.Product
 import supermarket.model.ProductQuantity
