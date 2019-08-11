@@ -1,5 +1,6 @@
 package dojo.supermarket.model
 
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -16,11 +17,20 @@ import supermarket.model.Teller
 import supermarket.model.offers.TenPercentDiscount
 import supermarket.model.offers.ThreeForTwo
 import supermarket.model.offers.XForAmount
+import supermarket.receiptgenerators.plaintext.PlainTextReceiptGenerator
 import java.util.stream.Stream
 
 @Suppress("ClassName")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReceiptPrinterTest_Regression {
+
+    private val receiptPrinter = ReceiptPrinter()
+    private val format = "TXT"
+
+    @BeforeEach
+    fun setUp() {
+        receiptPrinter.register(format, PlainTextReceiptGenerator())
+    }
 
     @DisplayName("receipt for cart with 0 items")
     @ParameterizedTest(name = "for {0} columns")
@@ -43,8 +53,8 @@ class ReceiptPrinterTest_Regression {
         }
 
         // when
-        val receiptPrinter = ReceiptPrinter()
         val printedReceipt = receiptPrinter.printReceipt(
+            format,
             teller.checksOutArticlesFrom(cart),
             mapOf("columns" to columns)
         )
@@ -132,8 +142,8 @@ class ReceiptPrinterTest_Regression {
         }
 
         // when
-        val receiptPrinter = ReceiptPrinter()
         val printedReceipt = receiptPrinter.printReceipt(
+            format,
             teller.checksOutArticlesFrom(cart),
             mapOf("columns" to columns)
         )
@@ -266,8 +276,7 @@ class ReceiptPrinterTest_Regression {
         }
 
         // when
-        val receiptPrinter = ReceiptPrinter()
-        val printedReceipt = receiptPrinter.printReceipt(teller.checksOutArticlesFrom(cart), mapOf("columns" to 40))
+        val printedReceipt = receiptPrinter.printReceipt(format, teller.checksOutArticlesFrom(cart))
 
         // then
         val expectedReceipt = """
