@@ -3,6 +3,7 @@ package supermarket
 import supermarket.model.ProductQuantity
 import supermarket.model.ProductUnit
 import supermarket.model.Receipt
+import supermarket.model.ReceiptItem
 import supermarket.model.offers.BundleDiscountOffer
 import supermarket.model.offers.Offer
 import supermarket.model.offers.TenPercentDiscount
@@ -14,20 +15,12 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
 
     fun printReceipt(receipt: Receipt): String {
         val result = StringBuilder()
-        for (item in receipt.items) {
-            val price = String.format(Locale.UK, "%.2f", item.totalPrice)
-            val quantity = formatQuantity(item.product.unit, item.quantity)
-            val name = item.product.name
-            val unitPrice = String.format(Locale.UK, "%.2f", item.price)
-
-            val whitespaceSize = this.columns - name.length - price.length
-            var line = name + getWhitespace(whitespaceSize) + price + "\n"
-
-            if (item.quantity != 1.0) {
-                line += "  $unitPrice * $quantity\n"
+        receipt
+            .items
+            .map(this::generateReceiptItemSection)
+            .forEach { line ->
+                result.append(line)
             }
-            result.append(line)
-        }
         receipt
             .discountOffers
             .forEach { discountOffer ->
@@ -46,6 +39,21 @@ class ReceiptPrinter @JvmOverloads constructor(private val columns: Int = 40) {
         val whitespace = getWhitespace(this.columns - total.length - pricePresentation.length)
         result.append(total).append(whitespace).append(pricePresentation)
         return result.toString()
+    }
+
+    private fun generateReceiptItemSection(item: ReceiptItem): String {
+        val price = String.format(Locale.UK, "%.2f", item.totalPrice)
+        val quantity = formatQuantity(item.product.unit, item.quantity)
+        val name = item.product.name
+        val unitPrice = String.format(Locale.UK, "%.2f", item.price)
+
+        val whitespaceSize = this.columns - name.length - price.length
+        var line = name + getWhitespace(whitespaceSize) + price + "\n"
+
+        if (item.quantity != 1.0) {
+            line += "  $unitPrice * $quantity\n"
+        }
+        return line
     }
 
     private fun getWhitespace(whitespaceSize: Int): String {
